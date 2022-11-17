@@ -26,3 +26,10 @@ Usage of main:
 2. 转换后建议使用xray poclint --script <转换后的yml文件>进行poc的lint；xray对poc的文件名和name字段有规则要求，需要转换后进行手工修改；部份rule的expression如果包含正则式需要手工修改。
 3. 测试的Poc：[github.com/GREENHAT7/pxplan](https://github.com/GREENHAT7/pxplan/tree/main/goby_pocs)
 
+
+
+## 参考
+
+- [XrayPoc](https://docs.xray.cool/#/guide/poc/v2)
+- [GobyExp](https://gobysec.net/exp)
+
