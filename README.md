@@ -5,17 +5,27 @@
 
 
 
-## Quikstart
+## 使用
 
-```
-go run main.go
+```bash
 Usage of main:
   -f string
     	transform one goby poc file
   -o string
-    	the xray poc output path
+    	the xray poc output path,default is same as src file
   -p string
     	transform poc file for path
+    	
+➜  pocGoby2Xray git:(main) ✗ go run main.go -p gobypoc -o xraypoc
+2022/11/17 21:40:51 Discuz!ML_3.x_RCE_CNVD-2019-22239.json:not support SetVariable regex
+2022/11/17 21:40:51 Discuz_ML_3.x_RCE__CNVD_2019_22239.json:not support SetVariable regex
+2022/11/17 21:40:51 GitLab_RCE_CVE-2021-22205.json:not support SetVariable regex
+2022/11/17 21:40:51 Gitlab_RCE_CVE_2021_22205.json:not support SetVariable regex
+2022/11/17 21:40:51 Tianwen_ERP_system_FileUpload_CNVD_2020_28119.json:not support SetVariable regex
+2022/11/17 21:40:51 Tianwen_ERP_system__uploadfile.aspx_Arbitraryvfilevupload.json:not support SetVariable regex
+2022/11/17 21:40:51 VMware_vCenter_Log4shell_CVE-2021-44228_(1).json:not support SetVariable regex
+2022/11/17 21:40:51 VMware_vCenter_Log4shell_CVE_2021_44228_1.json:not support SetVariable regex
+2022/11/17 21:40:51 [+]Finish: 360/368
 ```
 
 

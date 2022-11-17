@@ -18,7 +18,7 @@ var (
 func main() {
 	flag.StringVar(&gobyPocFile, "f", "", "transform one goby poc file")
 	flag.StringVar(&gobyPocPath, "p", "", "transform poc file for path")
-	flag.StringVar(&outputPath, "o", "", "the xray poc output path")
+	flag.StringVar(&outputPath, "o", "", "the xray poc output path,default is same as src file")
 	flag.Parse()
 
 	if gobyPocFile == "" && gobyPocPath == "" {
