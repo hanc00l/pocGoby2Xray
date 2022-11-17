@@ -1,7 +1,7 @@
 # pocGoby2Xray
 将Goby的json格式Poc转为xray的yaml格式Poc。
 
-Goby和Xray是深受网络安全爱好者（包括本人）使用的社区/商业化的渗透测试工具，在Nemo项目中也集成了调用Xray进行Poc扫描。pocGoby2Xray的初衷是通过“翻译”两种工具的Poc规则和语法后进行“转换”，方便统一使用Xray的调用Poc。
+[Goby](https://gobysec.net/)和[Xray](https://github.com/chaitin/xray)是深受网络安全爱好者（包括本人）使用的社区/商业化的渗透测试工具，在[Nemo](https://github.com/hanc00l/nemo_go)项目中也集成了调用Xray进行Poc扫描。pocGoby2Xray的初衷是通过“翻译”两种工具的Poc规则和语法后进行“转换”，方便统一使用Xray的调用Poc。
 
 
 
