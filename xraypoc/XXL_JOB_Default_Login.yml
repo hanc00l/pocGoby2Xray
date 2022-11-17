@@ -1,0 +1,20 @@
+name: XXL-JOB Default Login
+manual: true
+query: app="XXL-JOB" || title="任务调度中心"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /login
+      headers:
+        Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+      body: userName=admin&password=123456
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"200") && !response.body.bcontains(b"500")
+expression: r0()
+detail:
+  links:
+  - https://github.com/xuxueli/xxl-job
+  description: A distributed task scheduling framework.
+  tags: defaultaccount

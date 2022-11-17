@@ -1,0 +1,17 @@
+name: wangyixingyun waf Information leakage
+manual: true
+query: title="网页防篡改"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /API/
+      follow_redirects: true
+    expression: response.status == 404 && response.body.bcontains(b"order")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  tags: infoleak

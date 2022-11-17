@@ -1,0 +1,13 @@
+name: Jitong EWEBS phpinfo leak
+manual: true
+query: body="极通软件"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /testweb.php
+    expression: response.body.bcontains(b"PHP Version")
+expression: r0()
+detail:
+  tags: infoleak

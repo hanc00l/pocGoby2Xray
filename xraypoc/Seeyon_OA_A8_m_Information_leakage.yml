@@ -1,0 +1,19 @@
+name: Seeyon OA A8-m Information leakage
+manual: true
+query: app="Apache-Tomcat" && body="A8-m"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /seeyon/management/index.jsp
+    expression: response.status == 200 && response.body.bcontains(b"Password")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Seeyon OA A8-m has state monitoring page information leakage, from
+    which attackers can obtain sensitive information such as website path and user
+    name for further attack
+  tags: Disclosure of Sensitive Information

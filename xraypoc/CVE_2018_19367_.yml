@@ -1,0 +1,17 @@
+name: Portainer为创建用户导致未授权访问(CVE-2018-19367)
+manual: true
+query: title=Portainer
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /api/users/admin/check
+      follow_redirects: true
+    expression: response.status == 404
+expression: r0()
+detail:
+  author: k3vi_07@icloud.com
+  links:
+  - https://github.com/lichti/shodan-portainer/
+  description: Portainer是一款用于管理Docker环境和Docker主机的轻量级用户管理界面。 Portainer 1.19.2及之前版本中存在安全漏洞，该漏洞源于在管理员未被创建时，用于验证的API端点会返回404，而管理员已被创建时，则会返回204。攻击者可利用该漏洞在主机上获取未授权的访问权限。

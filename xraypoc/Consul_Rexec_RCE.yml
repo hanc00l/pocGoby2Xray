@@ -1,0 +1,18 @@
+name: Consul Rexec RCE
+manual: true
+query: protocol="consul(http)"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /v1/agent/self
+    expression: response.status == 200 && response.body.bcontains(b"\"DisableRemoteExec\":false")
+expression: r0()
+detail:
+  links:
+  - https://www.exploit-db.com/exploits/46073
+  description: Consul is the control plane of the service mesh. Consul is a multi-networking
+    tool that offers a fully-featured service mesh solution that solves the networking
+    and security challenges of operating microservices and cloud infrastructure.
+  tags: rce

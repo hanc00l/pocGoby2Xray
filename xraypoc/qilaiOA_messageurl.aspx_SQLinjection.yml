@@ -1,0 +1,17 @@
+name: qilaiOA messageurl.aspx SQLinjection
+manual: true
+query: header="Server"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /client/messageurl.aspx?user='
+      follow_redirects: true
+    expression: response.status == 500 && response.body.bcontains(b"messageurl")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  tags: sqli

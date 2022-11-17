@@ -1,0 +1,24 @@
+name: Docker Registry API Unauth
+manual: true
+query: header="registry/2.0"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /v2/
+    expression: response.status == 200 && response.raw_header.bcontains(b"docker-distribution-api-version")
+      && response.raw_header.bcontains(b"registry/2.0")
+  r1:
+    request:
+      method: GET
+      path: /v2/_catalog
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"repositories")
+expression: r0() && r1()
+detail:
+  links:
+  - https://www.freeaihub.com/post/6085.html
+  description: Docker is a set of platform as a service products that use OS-level
+    virtualization to deliver software in packages called containers.
+  tags: unauth

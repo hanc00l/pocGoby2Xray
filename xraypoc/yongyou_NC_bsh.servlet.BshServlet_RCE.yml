@@ -1,0 +1,17 @@
+name: 用友 NC bsh.servlet.BshServlet 远程命令执行漏洞
+manual: true
+query: body="Script"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /servlet/~ic/bsh.servlet.BshServlet
+    expression: response.status == 200 || response.body.bcontains(b"Script")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://mp.weixin.qq.com/s/FvqC1I_G14AEQNztU0zn8A
+  description: 用友 NC bsh.servlet.BshServlet 存在远程命令执行漏洞，通过BeanShell 执行远程命令获取服务器权限
+  tags: RCE

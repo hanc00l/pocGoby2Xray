@@ -1,0 +1,17 @@
+name: laifuyun_sqli
+manual: true
+query: title="孚盟云 - 用户登录"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: ///Ajax/AjaxMethod.ashx?action=getEmpByname&Name=Y
+      follow_redirects: true
+    expression: response.status == 200
+expression: r0()
+detail:
+  author: Nine River SEC
+  links:
+  - Internet
+  description: 上海孚盟软件有限公司成立于2006年06月05日，注册地位于上海市闵行区元江路5500号第1幢，法定代表人为郭彦荣。经营范围包括从事计算机技术领域内的技术开发、技术转让、技术咨询、技术服务,机电产品的批发(除专控)。[依法须经批准的项目,经相关部门批准后方可开展经营活动]上海孚盟软件有限公司对外投资1家公司，具有9处分支机构。

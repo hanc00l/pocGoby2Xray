@@ -1,0 +1,17 @@
+name: Apache Airflow Unauthorized
+manual: true
+query: app="APACHE-Airflow"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /admin/
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"Airflow - DAGs")
+      && response.body.bcontains(b"DAGs")
+expression: r0()
+detail:
+  description: Airflow is a platform created by the community to programmatically
+    author, schedule and monitor workflows.
+  tags: Unauthorized

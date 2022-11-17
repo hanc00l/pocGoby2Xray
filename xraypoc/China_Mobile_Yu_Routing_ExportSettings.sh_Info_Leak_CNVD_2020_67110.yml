@@ -1,0 +1,16 @@
+name: China Mobile Yu Routing ExportSettings.sh Info Leak CNVD-2020-67110
+manual: true
+query: body="中移"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /cgi-bin/ExportSettings.sh
+    expression: response.body.bcontains(b"Password")
+expression: r0()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2020-67110
+  description: Yu Routing is an IoT router.
+  tags: infoleak

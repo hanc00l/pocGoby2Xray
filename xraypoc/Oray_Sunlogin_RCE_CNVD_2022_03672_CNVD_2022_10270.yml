@@ -1,0 +1,30 @@
+name: Oray Sunlogin RCE CNVD-2022-03672 CNVD-2022-10270
+manual: true
+query: body="Verification failure"
+transport: http
+rules:
+  r0:
+    request:
+      method: POST
+      path: /cgi-bin/rpc
+      body: action=verify-haras
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"verify_string")
+  r1:
+    request:
+      method: GET
+      path: /cgi-bin/rpc?action=verify-haras
+      follow_redirects: true
+    expression: response.status == 200 && response.body.bcontains(b"verify_string")
+expression: r0() && r1()
+detail:
+  links:
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2022-03672
+  - https://www.cnvd.org.cn/flaw/show/CNVD-2022-10270
+  description: Sunlogin is a free remote control application that supports remote
+    power-on, remote desktop and NAT traversal. With customized transmit protocol
+    that is registered as an Intellectual Property and SSL/AES 256bits data encryption,
+    efficiency and security are both guaranteed throughout your usage. Supported IOS
+    and Android platform, offers you more convenient ways to file sharing, remote
+    monitoring, remote application, VPN and etc.
+  tags: rce

