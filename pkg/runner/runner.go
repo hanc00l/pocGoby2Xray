@@ -170,8 +170,11 @@ func (p *PocRunner) analyseScanStep(ScanStepOpt map[string]interface{}) (rule xr
 	} else {
 		//err = errors.New("no response check")
 		// 有些poc的步骤没有check,默认增加一个true
-		// expression: "true"
-		rule.Expression = "true"
+		// expression: true
+		// rule.Expression = strings.Join([]string{"true"}, "")
+		// 由于expression要返回bool，string的true为加""，直接加expression: true不行
+		// 所以还是用response.status >= 200代表
+		rule.Expression = strings.Join([]string{"response.status >= 200"}, "")
 	}
 	return
 }

